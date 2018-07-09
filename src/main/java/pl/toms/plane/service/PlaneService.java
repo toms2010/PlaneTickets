@@ -33,4 +33,9 @@ public class PlaneService {
 		planeRepository.deleteById(planeTypeId);	
 	}
 
+	public Plane updatePlane(Plane plane) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

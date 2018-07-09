@@ -53,4 +53,14 @@ public class FlightService {
 			}
 		}
 	}
+
+	public Flight updateFlight(Flight flight) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void deleteFlight(int flightId) {
+		// TODO Auto-generated method stub
+		
+	}
 }
