@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name="plane_type")
@@ -19,12 +20,14 @@ public class Plane extends BaseEntity{
 	private String model;
 	
 	@Column(name="seats_rows")
+	@NotNull
 	private int seatsRows;
 
 	@Column(name="number_of_premium_rows")
 	private int premiumRows;
 	
 	@Column(name="number_of_seats_in_row")
+	@NotNull
 	private int seatsInRow;
 	
 	/**

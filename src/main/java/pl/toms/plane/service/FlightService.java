@@ -33,7 +33,7 @@ public class FlightService {
 
 	public Flight addFlight(Flight flight) {
 		flight = flightRepository.save(flight);
-		buildFlightSeats(flight);
+//		buildFlightSeats(flight);
 		return flight;
 	}
 

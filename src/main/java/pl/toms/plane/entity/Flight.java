@@ -42,14 +42,14 @@ public class Flight extends BaseEntity{
 	 * Data wylotu. //TODO
 	 */
 	@Column(name = "departure_date")
-	@NotNull
+//	@NotNull
 	private Date departureDate;
 
 	/**
 	 * Czas lotu. //TODO
 	 */
 	@Column(name = "flight_time")
-	@NotNull
+//	@NotNull
 	private Date flightTime;
 
 	/** 
@@ -57,7 +57,7 @@ public class Flight extends BaseEntity{
 	 */
 	@ManyToOne 
 	@JoinColumn(name = "plane_type_id", nullable = false)
-	@NotEmpty
+//	@NotNull
 	private Plane plane;
 	
 	/**
