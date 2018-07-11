@@ -1,12 +1,12 @@
 package pl.toms.plane.repository;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import pl.toms.plane.entity.Flight;
 
 @Repository
-public interface FlightRepository extends CrudRepository<Flight, Integer>{
+public interface FlightRepository extends JpaRepository<Flight, Integer>{
 	
 	Flight findByFlightNumber(String number);
 	
