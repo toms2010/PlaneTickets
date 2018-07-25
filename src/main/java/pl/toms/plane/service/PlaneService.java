@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import pl.toms.plane.entity.Plane;
+import pl.toms.plane.exception.NotFoundException;
 import pl.toms.plane.repository.PlaneRepository;
 
 @Service
@@ -20,22 +21,20 @@ public class PlaneService {
 
 	public Plane getPlane(int planeTypeId) {
 		Plane plane = planeRepository.findOneById(planeTypeId);
-		System.out.println(plane);
+		if (plane == null)
+			throw new NotFoundException("There is no plane with id: " + planeTypeId);
+		
 		return plane; 
 	}
 
 	public Plane addPlaneType(Plane plane) {
-		plane = planeRepository.save(plane);
-		return plane;
+		return planeRepository.save(plane);
 	}
 
 	public void deletePlane(int planeTypeId) {
+		if (planeRepository.findOneById(planeTypeId) == null)
+			throw new NotFoundException("There is no plane with id: " + planeTypeId);
+		
 		planeRepository.deleteById(planeTypeId);	
 	}
-
-	public Plane updatePlane(Plane plane) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }
