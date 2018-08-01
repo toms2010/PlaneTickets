@@ -1,6 +1,7 @@
 package pl.toms.planeTickets.entity;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -39,25 +40,25 @@ public class Flight extends BaseEntity{
 	private String flightNumber;
 	
 	/**
-	 * Data wylotu. //TODO
+	 * Data wylotu
 	 */
 	@Column(name = "departure_date")
-//	@NotNull
-	private Date departureDate;
+	@NotNull
+	private LocalDateTime departureDate;
 
 	/**
-	 * Czas lotu. //TODO
+	 * Czas lotu.
 	 */
 	@Column(name = "flight_time")
-//	@NotNull
-	private Date flightTime;
+	@NotNull
+	private LocalTime flightTime;
 
 	/** 
 	 * Samolot.
 	 */
 	@ManyToOne 
 	@JoinColumn(name = "plane_type_id", nullable = false)
-//	@NotNull
+	//@NotNull
 	private Plane plane;
 	
 	/**
@@ -90,19 +91,19 @@ public class Flight extends BaseEntity{
 		this.flightNumber = flightNumber;
 	}
 
-	public Date getDepartureDate() {
+	public LocalDateTime getDepartureDate() {
 		return departureDate;
 	}
 
-	public void setDepartureDate(Date departureDate) {
+	public void setDepartureDate(LocalDateTime departureDate) {
 		this.departureDate = departureDate;
 	}
 
-	public Date getFlightTime() {
+	public LocalTime getFlightTime() {
 		return flightTime;
 	}
 
-	public void setFlightTime(Date flightTime) {
+	public void setFlightTime(LocalTime flightTime) {
 		this.flightTime = flightTime;
 	}
 
