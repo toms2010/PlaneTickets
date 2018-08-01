@@ -10,6 +10,7 @@ import pl.toms.planeTickets.entity.Plane;
 import pl.toms.planeTickets.entity.Seat;
 import pl.toms.planeTickets.exception.NotFoundException;
 import pl.toms.planeTickets.repository.FlightRepository;
+import pl.toms.planeTickets.repository.PlaneRepository;
 import pl.toms.planeTickets.repository.SeatRepository;
 
 @Service
@@ -18,6 +19,9 @@ public class FlightService {
 
 	@Autowired
 	private FlightRepository flightRepository;
+
+	@Autowired
+	private PlaneRepository planeRepository;
 
 	@Autowired
 	private SeatRepository seatRepository;
@@ -52,7 +56,19 @@ public class FlightService {
 
 	private void buildFlightSeats(Flight flight) {
 		Plane plane = flight.getPlane();
-		int seatsRows = plane.getSeatsRows();
+		if (plane == null) {
+			System.out.println("Błąd");
+			// TODO logger, i zwrócenie błędu
+			return;
+		}
+
+		Integer seatsRows = plane.getSeatsRows();
+		if (seatsRows == null || seatsRows == 0) {
+			Integer planeId = plane.getId();
+			plane = planeRepository.findOneById(planeId);
+			seatsRows = plane.getSeatsRows();
+		}
+
 		int seatsInRow = plane.getSeatsInRow();
 		int seatNumber = 0;
 		for (int i = 0; i < seatsInRow; i++) {
