@@ -16,7 +16,7 @@ import pl.toms.plane.entity.Seat;
 import pl.toms.plane.service.SeatService;
 
 @RestController
-@RequestMapping("api/plane/{planeTypeId}/")
+@RequestMapping("api/planes/{planeTypeId}/")
 public class SeatController {
 
 	protected static final Logger LOGGER = LoggerFactory.getLogger(SeatController.class);
@@ -24,17 +24,17 @@ public class SeatController {
 	@Autowired
 	private SeatService seatService;
 	
-	@GetMapping("/seat")
+	@GetMapping("/seats")
 	public List<Seat> getSeats(@PathVariable int planeTypeId){
 		return seatService.getSeats();
 	}
 	
-	@GetMapping("/seat/{seatNumber}")
+	@GetMapping("/seats/{seatNumber}")
 	public Seat getSeat(@PathVariable int planeTypeId, @PathVariable int seatNumber){
 		return seatService.getSeat(seatNumber);
 	}
 	
-	@PutMapping("/seat")
+	@PutMapping("/seats")
 	public Seat reservateSeat(@PathVariable int planeTypeId, @RequestBody Seat seat) {
 		return seatService.reservateSeat(seat);	
 	}

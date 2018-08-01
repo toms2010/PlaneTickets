@@ -31,17 +31,17 @@ public class PlaneController {
 	@Autowired
 	private PlaneService planeService;
 
-	@GetMapping("/plane")
+	@GetMapping("/planes")
 	public List<Plane> getPlanes() {
 		return planeService.getPlanes();
 	}
 
-	@GetMapping("/plane/{planeTypeId}")
+	@GetMapping("/planes/{planeTypeId}")
 	public Plane getPlane(@PathVariable int planeTypeId) {
 		return planeService.getPlane(planeTypeId);
 	}
 
-	@PostMapping("/plane")
+	@PostMapping("/planes")
 	public ResponseEntity<Plane> addPlaneType(@Valid @RequestBody Plane plane) {
 		Plane newPlane = planeService.addPlaneType(plane);
 
@@ -51,7 +51,7 @@ public class PlaneController {
 		return ResponseEntity.created(location).body(newPlane);
 	}
 
-	@PutMapping("/plane")
+	@PutMapping("/planes")
 	public ResponseEntity<URI> updatePlane(@RequestBody Plane plane) {
 		Plane updatedPlane = planeService.addPlaneType(plane);
 
@@ -61,7 +61,7 @@ public class PlaneController {
 		return ResponseEntity.ok(location);
 	}
 
-	@DeleteMapping("/plane/{planeTypeId}")
+	@DeleteMapping("/planes/{planeTypeId}")
 	public ResponseEntity<Plane> deletePlane(@PathVariable int planeTypeId) {
 		planeService.deletePlane(planeTypeId);
 

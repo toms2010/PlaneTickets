@@ -31,17 +31,17 @@ public class FlightController {
 	@Autowired
 	private FlightService flightService;
 
-	@GetMapping("/flight")
+	@GetMapping("/flights")
 	public List<Flight> getFlights() {
 		return flightService.getFlights();
 	}
 
-	@GetMapping("/flight/{flightId}")
+	@GetMapping("/flights/{flightId}")
 	public Flight getFlight(@PathVariable int flightId) {
 		return flightService.getFlight(flightId);
 	}
 
-	@PostMapping("/flight") // TODO Pomyśleć na Optional
+	@PostMapping("/flights") // TODO Pomyśleć na Optional
 	public ResponseEntity<Flight> addFlight(@Valid @RequestBody Flight flight) {
 		Flight newFlight = flightService.addFlight(flight);
 
@@ -51,7 +51,7 @@ public class FlightController {
 		return ResponseEntity.created(location).body(newFlight);
 	}
 
-	@PutMapping("/flight")
+	@PutMapping("/flights")
 	public ResponseEntity<URI> updateFlight(@Valid @RequestBody Flight flight) {
 		Flight updatedFlight = flightService.updateFlight(flight);
 
@@ -61,7 +61,7 @@ public class FlightController {
 		return ResponseEntity.ok(location);
 	}
 
-	@DeleteMapping("/flight/{flightId}")
+	@DeleteMapping("/flights/{flightId}")
 	public ResponseEntity<Flight> deleteFlight(@PathVariable int flightId) {
 		flightService.deleteFlight(flightId);
 
