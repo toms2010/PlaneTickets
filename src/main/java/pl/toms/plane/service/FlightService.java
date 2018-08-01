@@ -34,8 +34,8 @@ public class FlightService {
 	}
 
 	public Flight addFlight(Flight flight) {
+	    buildFlightSeats(flight);
 		flight = flightRepository.save(flight);
-//		buildFlightSeats(flight);
 		return flight;
 	}
 	
@@ -55,7 +55,7 @@ public class FlightService {
 		Plane plane = flight.getPlane();
 		int seatsRows = plane.getSeatsRows();
 		int seatsInRow = plane.getSeatsInRow();
-		int seatNumber=0;
+		int seatNumber = 0;
 		for (int i=0; i<seatsInRow; i++) {
 			for(int j=0; j<seatsRows; j++) {
 				Seat seat = new Seat();
