@@ -1,4 +1,4 @@
-package pl.toms.plane.exception;
+package pl.toms.planeTickets.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

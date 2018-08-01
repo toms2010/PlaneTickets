@@ -1,4 +1,4 @@
-package pl.toms.plane.entity;
+package pl.toms.planeTickets.entity;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;

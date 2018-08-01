@@ -1,10 +1,10 @@
-package pl.toms.plane.service;
+package pl.toms.planeTickets.service;
 
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import pl.toms.plane.entity.Seat;
+import pl.toms.planeTickets.entity.Seat;
 
 @Service
 public class SeatService {

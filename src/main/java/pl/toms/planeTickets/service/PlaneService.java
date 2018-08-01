@@ -1,13 +1,13 @@
-package pl.toms.plane.service;
+package pl.toms.planeTickets.service;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import pl.toms.plane.entity.Plane;
-import pl.toms.plane.exception.NotFoundException;
-import pl.toms.plane.repository.PlaneRepository;
+import pl.toms.planeTickets.entity.Plane;
+import pl.toms.planeTickets.exception.NotFoundException;
+import pl.toms.planeTickets.repository.PlaneRepository;
 
 @Service
 public class PlaneService {

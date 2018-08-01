@@ -1,4 +1,4 @@
-package pl.toms.plane.entity;
+package pl.toms.planeTickets.entity;
 
 import java.util.List;
 

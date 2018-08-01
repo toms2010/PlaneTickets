@@ -1,4 +1,4 @@
-package pl.toms;
+package pl.toms.planeTickets;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

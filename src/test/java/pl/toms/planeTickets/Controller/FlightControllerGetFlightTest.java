@@ -1,4 +1,4 @@
-package pl.toms;
+package pl.toms.planeTickets.Controller;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -21,13 +21,13 @@ import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import javassist.NotFoundException;
-import pl.toms.plane.controller.FlightController;
-import pl.toms.plane.entity.Flight;
-import pl.toms.plane.service.FlightService;
+import pl.toms.planeTickets.controller.FlightController;
+import pl.toms.planeTickets.entity.Flight;
+import pl.toms.planeTickets.service.FlightService;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(value = FlightController.class, secure = false)
-public class FlightControllerTest
+public class FlightControllerGetFlightTest
 {
     @Autowired
     private MockMvc mockMvc;
@@ -53,7 +53,7 @@ public class FlightControllerTest
         
         Mockito.when(flightService.getFlight(Mockito.eq(1))).thenReturn(mockFlightsFirst);
         Mockito.when(flightService.getFlight(Mockito.eq(2))).thenReturn(mockFlightsSecond);
-        Mockito.when(flightService.getFlight(Mockito.eq(3))).thenThrow(new pl.toms.plane.exception.NotFoundException());
+        Mockito.when(flightService.getFlight(Mockito.eq(3))).thenThrow(new pl.toms.planeTickets.exception.NotFoundException());
         Mockito.when(flightService.getFlights()).thenReturn(allFlights);
     }
     

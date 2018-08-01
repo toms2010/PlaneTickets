@@ -1,4 +1,4 @@
-package pl.toms.plane.exception;
+package pl.toms.planeTickets.exception;
 
 import java.util.Date;
 

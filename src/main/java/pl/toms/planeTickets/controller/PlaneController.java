@@ -1,4 +1,4 @@
-package pl.toms.plane.controller;
+package pl.toms.planeTickets.controller;
 
 import java.net.URI;
 import java.util.List;
@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import pl.toms.plane.entity.Plane;
-import pl.toms.plane.service.PlaneService;
+import pl.toms.planeTickets.entity.Plane;
+import pl.toms.planeTickets.service.PlaneService;
 
 @RestController
 @RequestMapping("api/")

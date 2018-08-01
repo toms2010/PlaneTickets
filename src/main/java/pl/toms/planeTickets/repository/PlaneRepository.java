@@ -1,8 +1,8 @@
-package pl.toms.plane.repository;
+package pl.toms.planeTickets.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import pl.toms.plane.entity.Plane;
+import pl.toms.planeTickets.entity.Plane;
 
 public interface PlaneRepository extends JpaRepository<Plane, Integer>{
 
