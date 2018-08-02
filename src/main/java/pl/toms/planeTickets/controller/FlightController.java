@@ -32,8 +32,8 @@ public class FlightController {
 	private FlightService flightService;
 
 	@GetMapping("/flights")
-	public List<Flight> getFlights() {
-		return flightService.getFlights();
+	public List<Flight> getAllFlights() {
+		return flightService.getAllFlights();
 	}
 
 	@GetMapping("/flights/{flightId}")
