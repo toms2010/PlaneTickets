@@ -1,6 +1,7 @@
 package pl.toms.planeTickets.entity;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -14,52 +15,56 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 @Entity
 @Table(name = "fly")
-public class Flight extends BaseEntity{
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@flightId")
+public class Flight extends BaseEntity {
 	/**
 	 * 3 literowy kod lotniska.
 	 */
 	@Column(name = "departure_airport")
-	@Size(min=3, max=3)
+	@Size(min = 3, max = 3)
 	private String departureAirport;
 
 	/**
 	 * 3 literowy kod lotniska.
 	 */
 	@Column(name = "arrival_airport")
-	@Size(min=3, max=3)
+	@Size(min = 3, max = 3)
 	private String arrivalAirport;
 
 	/**
 	 * Numer lotu
 	 */
-	@Column(name="fly_number")
+	@Column(name = "fly_number")
 	@NotEmpty
 	private String flightNumber;
-	
+
 	/**
-	 * Data wylotu. //TODO
+	 * Data wylotu
 	 */
 	@Column(name = "departure_date")
-//	@NotNull
-	private Date departureDate;
+	@NotNull
+	private LocalDateTime departureDate;
 
 	/**
-	 * Czas lotu. //TODO
+	 * Czas lotu.
 	 */
 	@Column(name = "flight_time")
-//	@NotNull
-	private Date flightTime;
+	@NotNull
+	private LocalTime flightTime;
 
-	/** 
+	/**
 	 * Samolot.
 	 */
-	@ManyToOne 
+	@ManyToOne
 	@JoinColumn(name = "plane_type_id", nullable = false)
-//	@NotNull
+	@NotNull
 	private Plane plane;
-	
+
 	/**
 	 * Miejsca w samolocie podczas lotu.
 	 */
@@ -90,19 +95,19 @@ public class Flight extends BaseEntity{
 		this.flightNumber = flightNumber;
 	}
 
-	public Date getDepartureDate() {
+	public LocalDateTime getDepartureDate() {
 		return departureDate;
 	}
 
-	public void setDepartureDate(Date departureDate) {
+	public void setDepartureDate(LocalDateTime departureDate) {
 		this.departureDate = departureDate;
 	}
 
-	public Date getFlightTime() {
+	public LocalTime getFlightTime() {
 		return flightTime;
 	}
 
-	public void setFlightTime(Date flightTime) {
+	public void setFlightTime(LocalTime flightTime) {
 		this.flightTime = flightTime;
 	}
 
@@ -121,5 +126,4 @@ public class Flight extends BaseEntity{
 	public void setSeats(List<Seat> seats) {
 		this.seats = seats;
 	}
-	
 }

@@ -4,19 +4,25 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Table(name="plane_type")
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property="@planeId")
 public class Plane extends BaseEntity{
 
 	@Column(name="brand")
+	@NotBlank
 	private String brand;
 	
 	@Column(name="model")
+	@NotBlank
 	private String model;
 	
 	@Column(name="seats_rows")
@@ -33,7 +39,7 @@ public class Plane extends BaseEntity{
 	/**
 	 * Loty z tym modelem.
 	 */
-	@OneToMany(mappedBy = "plane", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "plane")
 	private List<Flight> flights;
 
 	public String getBrand() {
