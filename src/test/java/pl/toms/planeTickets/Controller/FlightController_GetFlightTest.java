@@ -29,7 +29,7 @@ import pl.toms.planeTickets.service.FlightService;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(value = FlightController.class, secure = false)
-public class FlightControllerGetFlightTest
+public class FlightController_GetFlightTest
 {
     @Autowired
     private MockMvc mockMvc;
