@@ -2,6 +2,8 @@ package pl.toms.planeTickets.service;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,12 @@ import pl.toms.planeTickets.repository.SeatRepository;
 @Service
 public class FlightService {
 	// TODO sprawdzenie czy nie null
+    protected static final Logger LOGGER = LoggerFactory.getLogger(FlightService.class);
+    
+    /**
+     * Wiadomość przy błędzie {@link NotFoundException}
+     */
+    private static String message = "There is no flights with id: ";
 
 	@Autowired
 	private FlightRepository flightRepository;
@@ -30,36 +38,43 @@ public class FlightService {
 		return (List<Flight>) flightRepository.findAll();
 	}
 
-	public Flight getFlight(Integer id) {
-		// Optional<Flight> flight = flightRepository.findById(id);
-		Flight flight = flightRepository.findOneById(id);
-		return flight; // TODO
+	public Flight getFlight(Integer flightId) {
+		Flight flight = flightRepository.findOneById(flightId);
+		if (flight == null) {
+		    message += flightId;
+		    LOGGER.error(message);
+            throw new NotFoundException(message);
+		}
+		return flight;
 	}
 
 	public Flight addFlight(Flight flight) {
 		buildFlightSeats(flight);
-		flight = flightRepository.save(flight);
-		return flight;
+		Flight newFlight = flightRepository.save(flight);
+		LOGGER.debug("Created new flight with id: " + newFlight.getId());
+		return newFlight;
 	}
 
 	public Flight updateFlight(Flight flight) {
-
 		return flightRepository.save(flight);
 	}
 
 	public void deleteFlight(int flightId) {
-		if (flightRepository.findOneById(flightId) == null)
-			throw new NotFoundException("There is no flights with id: " + flightId);
-
+		if (flightRepository.findOneById(flightId) == null) {
+	          message += flightId;
+	          LOGGER.error(message);
+	          throw new NotFoundException(message);
+		}
 		flightRepository.deleteById(flightId);
+		LOGGER.debug("Deleted flight with id: " + flightId);
 	}
 
 	private void buildFlightSeats(Flight flight) {
 		Plane plane = flight.getPlane();
 		if (plane == null) {
-			System.out.println("Błąd");
-			// TODO logger, i zwrócenie błędu
-			return;
+		    String message = "There is no information about the plane";
+		    LOGGER.error(message);
+            throw new NotFoundException(message);
 		}
 
 		Integer seatsRows = plane.getSeatsRows();
