@@ -5,6 +5,8 @@ import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,11 +45,17 @@ public class FlightController_GetFlightTest
         mockFlightsFirst.setId(1);
         mockFlightsFirst.setFlightNumber("ABC123");
         mockFlightsFirst.setDepartureAirport("KTW");
+        mockFlightsFirst.setArrivalAirport("WWA");
+        mockFlightsFirst.setDepartureDate(LocalDateTime.of(2018, 07, 29, 15, 35));
+        mockFlightsFirst.setFlightTime(LocalTime.of(2, 50));
         
         Flight mockFlightsSecond = new Flight();
         mockFlightsSecond.setId(2);
         mockFlightsSecond.setFlightNumber("ABC567");
         mockFlightsSecond.setDepartureAirport("KTZ");
+        mockFlightsSecond.setArrivalAirport("WAB");
+        mockFlightsSecond.setDepartureDate(LocalDateTime.of(2018, 8, 01, 15, 35));
+        mockFlightsSecond.setFlightTime(LocalTime.of(5, 15));
         
         List<Flight> allFlights = new ArrayList<>();
         allFlights.add(mockFlightsFirst);
@@ -127,9 +135,15 @@ public class FlightController_GetFlightTest
             .andExpect(jsonPath("$[0].id", is(1)))
             .andExpect(jsonPath("$[0].flightNumber", is("ABC123")))
             .andExpect(jsonPath("$[0].departureAirport", is("KTW")))
+            .andExpect(jsonPath("$[0].arrivalAirport", is("WWA")))
+            .andExpect(jsonPath("$[0].departureDate", is("2018-07-29T15:35:00")))
+            .andExpect(jsonPath("$[0].flightTime", is("02:50:00")))
             .andExpect(jsonPath("$[1].id", is(2)))
-            .andExpect(jsonPath("$[0].flightNumber", is("ABC567")))
-            .andExpect(jsonPath("$[0].departureAirport", is("KTZ")))
+            .andExpect(jsonPath("$[1].flightNumber", is("ABC567")))
+            .andExpect(jsonPath("$[1].departureAirport", is("KTZ")))
+            .andExpect(jsonPath("$[1].arrivalAirport", is("WAB")))
+            .andExpect(jsonPath("$[1].departureDate", is("2018-08-01T15:35:00")))
+            .andExpect(jsonPath("$[1].flightTime", is("05:15:00")))
             .andReturn();
     } 
 }

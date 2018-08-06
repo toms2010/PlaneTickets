@@ -2,6 +2,8 @@ package pl.toms.planeTickets.Controller;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.Random;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,39 +37,45 @@ public class FlightController_DeleteFlightTest
      * Identyfikator lotu 
      */
     int flightId;
+    
+    /** 
+     * Błędny identyfikator lotu 
+     */
     int otherId;
     
     @Before
     public void setUp() {
-        flightId = Mockito.anyInt();
-        otherId = Mockito.anyInt();
+        Random generator = new Random();
+        flightId = generator.nextInt();
+        otherId = generator.nextInt();
+        //zabezpieczenie przed wylosowaniem dwóch takich samych Id
         for(;flightId == otherId;)
-            otherId = Mockito.anyInt();
+            otherId = generator.nextInt();
         
-        Mockito.doNothing().when(flightService).deleteFlight(flightId);
+        Mockito.doNothing().when(flightService).deleteFlight(Mockito.eq(flightId));
+        Mockito.doThrow(new pl.toms.planeTickets.exception.NotFoundException()).when(flightService).deleteFlight(Mockito.eq(otherId));
     }
     
     /**
-     * Test sprawdzający czy zostanie usunięty lot pod zapytaniem <b>DELETE</b> <code>/api/flights/1 </code>
+     * Test sprawdzający czy zostanie usunięty lot pod zapytaniem <b>DELETE</b> <code>/api/flights/{flightId} </code>
      * oraz czy status http będzie równy 200
      * @throws Exception
      */
     @Test
     public void retrieveSingleFlightWhenIdIsOne() throws Exception {
         RequestBuilder requestBuilder = MockMvcRequestBuilders.delete("/api/flights/" + flightId).accept(MediaType.APPLICATION_JSON);
-        
         mockMvc.perform(requestBuilder).andExpect(status().isNoContent());
     } 
         
     /**
-     * Test sprawdzający czy nie zostanie usunięty lot pod zapytaniem <b>DELETE</b> <code>/api/flights/3 </code>
+     * Test sprawdzający czy nie zostanie usunięty lot pod zapytaniem <b>DELETE</b> <code>/api/flights/{otherId} </code>
      * oraz czy status http będzie równy 404
      * @throws Exception
      */
     @Test
     public void retrieveSingleFlightWhenIdIsThree() throws Exception {
         RequestBuilder requestBuilder = MockMvcRequestBuilders.delete("/api/flights/" + otherId).accept(MediaType.APPLICATION_JSON);
-         
+    
         mockMvc.perform(requestBuilder).andExpect(status().isNotFound());  
     } 
     
