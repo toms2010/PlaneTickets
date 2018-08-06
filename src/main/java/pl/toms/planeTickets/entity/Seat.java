@@ -15,7 +15,7 @@ public class Seat extends BaseEntity{
 	/**
 	 * Statusy miejsc
 	 */
-	public enum SeatStatus{
+	public static enum SeatStatus{
 		/** Free */
 		F("F", "Free"),
 		/** Reserved */
@@ -23,8 +23,8 @@ public class Seat extends BaseEntity{
 		/** Not avable */
 		N("N", "Not avable");
 		
-		String status;
-		String name;
+		private String status;
+		private String name;
 		
 		private SeatStatus(String status, String name) {
 			this.status = status;

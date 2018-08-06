@@ -25,7 +25,7 @@ import pl.toms.planeTickets.service.FlightService;
 @RestController
 @RequestMapping("api/")
 public class FlightController {
-	// TODO logowanie , javadoc
+	// TODO logowanie , javadoc , optoionale
 	protected static final Logger LOGGER = LoggerFactory.getLogger(FlightController.class);
 
 	@Autowired
@@ -41,30 +41,24 @@ public class FlightController {
 		return flightService.getFlight(flightId);
 	}
 
-	@PostMapping("/flights") // TODO Pomyśleć na Optional
+	@PostMapping("/flights") 
 	public ResponseEntity<Flight> addFlight(@Valid @RequestBody Flight flight) {
 		Flight newFlight = flightService.addFlight(flight);
-
-		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newFlight.getId())
-				.toUri();
-
+		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newFlight.getId()).toUri();
 		return ResponseEntity.created(location).body(newFlight);
 	}
 
 	@PutMapping("/flights")
 	public ResponseEntity<URI> updateFlight(@Valid @RequestBody Flight flight) {
 		Flight updatedFlight = flightService.updateFlight(flight);
-
-		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-				.buildAndExpand(updatedFlight.getId()).toUri();
-///304 (Not Modified)
+		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(updatedFlight.getId()).toUri();
+		    ///304 (Not Modified)
 		return ResponseEntity.ok(location);
 	}
 
 	@DeleteMapping("/flights/{flightId}")
 	public ResponseEntity<Flight> deleteFlight(@PathVariable int flightId) {
 		flightService.deleteFlight(flightId);
-
 		return ResponseEntity.noContent().build();
 	}
 }
