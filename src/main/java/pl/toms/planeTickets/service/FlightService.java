@@ -25,8 +25,8 @@ public class FlightService {
 
 	@Autowired
 	private SeatRepository seatRepository;
-
-	public List<Flight> getFlights() {
+	
+	public List<Flight> getAllFlights() {
 		return (List<Flight>) flightRepository.findAll();
 	}
 
