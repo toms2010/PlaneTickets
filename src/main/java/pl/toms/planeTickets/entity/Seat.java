@@ -5,9 +5,6 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name="seat")
@@ -35,44 +32,28 @@ public class Seat extends BaseEntity{
 			return status;
 		}
 
-		public void setStatus(String status) {
-			this.status = status;
-		}
-
 		public String getName() {
 			return name;
 		}
-
-		public void setName(String name) {
-			this.name = name;
-		}
-		
-		
 	}
 
 	/**
 	 * Numer miejsca
 	 */
 	@Column(name="number")
-	@NotNull
 	private int number;
-	
-	//TODO passager id.
-	//TODO priceGroup id.
 	
 	/**
 	 * Identyfikator lotu.
 	 */
 	@ManyToOne 
 	@JoinColumn(name = "fly_id", nullable = false)
-	@NotEmpty
 	private Flight flight;
 	
 	/**
 	 * Status miejsca
 	 */
 	@Column(name="status")
-	@NotBlank
 	private String status;
 
 	public int getNumber() {
@@ -98,6 +79,4 @@ public class Seat extends BaseEntity{
 	public void setStatus(String status) {
 		this.status = status;
 	}
-
-	
 }
