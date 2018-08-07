@@ -10,6 +10,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
@@ -39,6 +40,7 @@ public class Plane extends BaseEntity{
 	/**
 	 * Loty z tym modelem.
 	 */
+	@JsonIdentityReference(alwaysAsId = true)
 	@OneToMany(mappedBy = "plane")
 	private List<Flight> flights;
 
@@ -89,6 +91,4 @@ public class Plane extends BaseEntity{
 	public void setFlights(List<Flight> flights) {
 		this.flights = flights;
 	}
-
-	
 }
