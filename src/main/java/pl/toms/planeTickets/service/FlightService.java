@@ -17,7 +17,6 @@ import pl.toms.planeTickets.repository.SeatRepository;
 
 @Service
 public class FlightService {
-	// TODO sprawdzenie czy nie null
     protected static final Logger LOGGER = LoggerFactory.getLogger(FlightService.class);
     
     /**
@@ -35,7 +34,7 @@ public class FlightService {
 	private SeatRepository seatRepository;
 	
 	public List<Flight> getAllFlights() {
-		return (List<Flight>) flightRepository.findAll();
+		return flightRepository.findAll();
 	}
 
 	public Flight getFlight(Integer flightId) {
@@ -49,10 +48,11 @@ public class FlightService {
 	}
 
 	public Flight addFlight(Flight flight) {
-		buildFlightSeats(flight);
 		Flight newFlight = flightRepository.save(flight);
-		LOGGER.debug("Created new flight with id: " + newFlight.getId());
-		return newFlight;
+		buildFlightSeats(newFlight);
+		Integer newFlightId = newFlight.getId();
+		LOGGER.debug("Created new flight with id: " + newFlightId);
+		return flightRepository.findOneById(newFlightId); //FIXME nie zwraca seats!
 	}
 
 	public Flight updateFlight(Flight flight) {
