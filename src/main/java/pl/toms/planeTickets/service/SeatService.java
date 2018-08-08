@@ -24,7 +24,7 @@ public class SeatService {
      * Wiadomość przy błędzie lotu {@link NotFoundException}
      */
     private static String flightMessage = "There is no flights with id: ";
-   
+
     @Autowired
     private SeatRepository seatRepository;
 
@@ -50,7 +50,7 @@ public class SeatService {
 	}
 	Seat seat = seatRepository.findOneByNumberAndFlight(seatNumber, flight);
 	if (seat == null) {
-	    String message = "There is no seat with id: "+ seatNumber;
+	    String message = "There is no seat with id: " + seatNumber;
 	    LOGGER.error(message);
 	    throw new NotFoundException(message);
 	}
@@ -58,10 +58,10 @@ public class SeatService {
     }
 
     public Seat reservateSeat(Seat seat) {
-	if(!Seat.SeatStatus.F.getStatus().equals(seat.getStatus())){
-	    String message = "Seat is not available: "+ seat.getNumber();
+	if (!Seat.SeatStatus.F.getStatus().equals(seat.getStatus())) {
+	    String message = "Seat is not available: " + seat.getNumber();
 	    LOGGER.debug(message);
-	    throw new ApplicationException(message, HttpStatus.CONFLICT) ;
+	    throw new ApplicationException(message, HttpStatus.CONFLICT);
 	}
 	seat.setStatus(SeatStatus.R.getStatus());
 	seatRepository.save(seat);

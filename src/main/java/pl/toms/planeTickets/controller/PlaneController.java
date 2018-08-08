@@ -5,8 +5,6 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,46 +23,43 @@ import pl.toms.planeTickets.service.PlaneService;
 @RestController
 @RequestMapping("api/")
 public class PlaneController {
+    @Autowired
+    private PlaneService planeService;
 
-	protected static final Logger LOGGER = LoggerFactory.getLogger(PlaneController.class);
+    @GetMapping("/planes")
+    public List<Plane> getPlanes() {
+	return planeService.getPlanes();
+    }
 
-	@Autowired
-	private PlaneService planeService;
+    @GetMapping("/planes/{planeTypeId}")
+    public Plane getPlane(@PathVariable int planeTypeId) {
+	return planeService.getPlane(planeTypeId);
+    }
 
-	@GetMapping("/planes")
-	public List<Plane> getPlanes() {
-		return planeService.getPlanes();
-	}
+    @PostMapping("/planes")
+    public ResponseEntity<Plane> addPlaneType(@Valid @RequestBody Plane plane) {
+	Plane newPlane = planeService.addPlaneType(plane);
 
-	@GetMapping("/planes/{planeTypeId}")
-	public Plane getPlane(@PathVariable int planeTypeId) {
-		return planeService.getPlane(planeTypeId);
-	}
+	URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newPlane.getId())
+		.toUri();
 
-	@PostMapping("/planes")
-	public ResponseEntity<Plane> addPlaneType(@Valid @RequestBody Plane plane) {
-		Plane newPlane = planeService.addPlaneType(plane);
+	return ResponseEntity.created(location).body(newPlane);
+    }
 
-		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newPlane.getId())
-				.toUri();
+    @PutMapping("/planes")
+    public ResponseEntity<URI> updatePlane(@RequestBody Plane plane) {
+	Plane updatedPlane = planeService.addPlaneType(plane);
 
-		return ResponseEntity.created(location).body(newPlane);
-	}
+	URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+		.buildAndExpand(updatedPlane.getId()).toUri();
 
-	@PutMapping("/planes")
-	public ResponseEntity<URI> updatePlane(@RequestBody Plane plane) {
-		Plane updatedPlane = planeService.addPlaneType(plane);
+	return ResponseEntity.ok(location);
+    }
 
-		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-				.buildAndExpand(updatedPlane.getId()).toUri();
+    @DeleteMapping("/planes/{planeTypeId}")
+    public ResponseEntity<Plane> deletePlane(@PathVariable int planeTypeId) {
+	planeService.deletePlane(planeTypeId);
 
-		return ResponseEntity.ok(location);
-	}
-
-	@DeleteMapping("/planes/{planeTypeId}")
-	public ResponseEntity<Plane> deletePlane(@PathVariable int planeTypeId) {
-		planeService.deletePlane(planeTypeId);
-
-		return ResponseEntity.noContent().build();
-	}
+	return ResponseEntity.noContent().build();
+    }
 }
