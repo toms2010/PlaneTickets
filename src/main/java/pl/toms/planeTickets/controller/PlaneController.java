@@ -21,22 +21,22 @@ import pl.toms.planeTickets.entity.Plane;
 import pl.toms.planeTickets.service.PlaneService;
 
 @RestController
-@RequestMapping("api/")
+@RequestMapping("api/planes")
 public class PlaneController {
     @Autowired
     private PlaneService planeService;
 
-    @GetMapping("/planes")
+    @GetMapping
     public List<Plane> getPlanes() {
 	return planeService.getPlanes();
     }
 
-    @GetMapping("/planes/{planeTypeId}")
+    @GetMapping("/{planeTypeId}")
     public Plane getPlane(@PathVariable int planeTypeId) {
 	return planeService.getPlane(planeTypeId);
     }
 
-    @PostMapping("/planes")
+    @PostMapping
     public ResponseEntity<Plane> addPlaneType(@Valid @RequestBody Plane plane) {
 	Plane newPlane = planeService.addPlaneType(plane);
 
@@ -46,7 +46,7 @@ public class PlaneController {
 	return ResponseEntity.created(location).body(newPlane);
     }
 
-    @PutMapping("/planes")
+    @PutMapping
     public ResponseEntity<URI> updatePlane(@RequestBody Plane plane) {
 	Plane updatedPlane = planeService.addPlaneType(plane);
 
@@ -56,7 +56,7 @@ public class PlaneController {
 	return ResponseEntity.ok(location);
     }
 
-    @DeleteMapping("/planes/{planeTypeId}")
+    @DeleteMapping("/{planeTypeId}")
     public ResponseEntity<Plane> deletePlane(@PathVariable int planeTypeId) {
 	planeService.deletePlane(planeTypeId);
 
