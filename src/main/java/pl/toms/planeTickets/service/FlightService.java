@@ -1,5 +1,6 @@
 package pl.toms.planeTickets.service;
 
+import java.text.MessageFormat;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -22,8 +23,8 @@ public class FlightService {
     /**
      * Wiadomość przy błędzie {@link NotFoundException}
      */
-    private static String message = "There is no flights with id: ";
-
+    MessageFormat form = new MessageFormat("There is no flights with id: {0}.");
+    
     @Autowired
     private FlightRepository flightRepository;
 
@@ -37,22 +38,23 @@ public class FlightService {
 	return flightRepository.findAll();
     }
 
-    public Flight getFlight(Integer flightId) {
+    public Flight getFlight(int flightId) {
 	Flight flight = flightRepository.findOneById(flightId);
 	if (flight == null) {
-	    message += flightId;
-	    LOGGER.error(message);
-	    throw new NotFoundException(message);
+	    Object[] testArgs = {new Integer(flightId)};
+	    String info = form.format(testArgs);
+	    LOGGER.error(info);
+	    throw new NotFoundException(info);
 	}
 	return flight;
     }
 
     public Flight addFlight(Flight flight) {
-	Flight newFlight = flightRepository.save(flight);
-	buildFlightSeats(newFlight);
-	Integer newFlightId = newFlight.getId();
-	LOGGER.debug("Created new flight with id: " + newFlightId);
-	return flightRepository.findOneById(newFlightId); // FIXME nie zwraca seats!
+        Flight newFlight = flightRepository.save(flight);
+        buildFlightSeats(newFlight);
+        Integer newFlightId = newFlight.getId();
+        LOGGER.debug("Created new flight with id: " + newFlightId);
+        return flightRepository.findOneById(newFlightId); // FIXME nie zwraca seats!
     }
 
     public Flight updateFlight(Flight flight) {
@@ -61,9 +63,10 @@ public class FlightService {
 
     public void deleteFlight(int flightId) {
 	if (flightRepository.findOneById(flightId) == null) {
-	    message += flightId;
-	    LOGGER.error(message);
-	    throw new NotFoundException(message);
+	    Object[] testArgs = {new Integer(flightId)};
+        String info = form.format(testArgs);
+	    LOGGER.error(info);
+	    throw new NotFoundException(info);
 	}
 	flightRepository.deleteById(flightId);
 	LOGGER.debug("Deleted flight with id: " + flightId);

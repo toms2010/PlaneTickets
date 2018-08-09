@@ -1,5 +1,6 @@
 package pl.toms.planeTickets.service;
 
+import java.text.MessageFormat;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -19,7 +20,7 @@ public class PlaneService {
     /**
      * Wiadomość przy błędzie {@link NotFoundException}
      */
-    private static String message = "There is no plane with id: ";
+    MessageFormat form = new MessageFormat("There is no plane with id: {0}.");
 
     @Autowired
     private PlaneRepository planeRepository;
@@ -31,9 +32,10 @@ public class PlaneService {
     public Plane getPlane(int planeTypeId) {
 	Plane plane = planeRepository.findOneById(planeTypeId);
 	if (plane == null) {
-	    message += planeTypeId;
-	    LOGGER.error(message);
-	    throw new NotFoundException(message);
+	    Object[] testArgs = {new Integer(planeTypeId)};
+	    String info = form.format(testArgs);
+	    LOGGER.error(info);
+	    throw new NotFoundException(info);
 	}
 	return plane;
     }
@@ -46,9 +48,10 @@ public class PlaneService {
 
     public void deletePlane(int planeTypeId) {
 	if (planeRepository.findOneById(planeTypeId) == null) {
-	    message += planeTypeId;
-	    LOGGER.error(message);
-	    throw new NotFoundException(message);
+        Object[] testArgs = {new Integer(planeTypeId)};
+        String info = form.format(testArgs);
+	    LOGGER.error(info);
+	    throw new NotFoundException(info);
 	}
 	planeRepository.deleteById(planeTypeId);
 	LOGGER.debug("Deleted plane with id: " + planeTypeId);

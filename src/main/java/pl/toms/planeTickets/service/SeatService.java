@@ -1,5 +1,6 @@
 package pl.toms.planeTickets.service;
 
+import java.text.MessageFormat;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -23,7 +24,7 @@ public class SeatService {
     /**
      * Wiadomość przy błędzie lotu {@link NotFoundException}
      */
-    private static String flightMessage = "There is no flights with id: ";
+    MessageFormat form = new MessageFormat("There is no flights with id: {0}.");
 
     @Autowired
     private SeatRepository seatRepository;
@@ -34,9 +35,10 @@ public class SeatService {
     public List<Seat> getSeats(Integer flightId) {
 	Flight flight = flightRepository.findOneById(flightId);
 	if (flight == null) {
-	    flightMessage += flightId;
-	    LOGGER.error(flightMessage);
-	    throw new NotFoundException(flightMessage);
+	    Object[] testArgs = {new Integer(flightId)};
+        String info = form.format(testArgs);
+	    LOGGER.error(info);
+	    throw new NotFoundException(info);
 	}
 	return seatRepository.findAllByFlight(flight);
     }
@@ -44,15 +46,18 @@ public class SeatService {
     public Seat getSeat(Integer flightId, Integer seatNumber) {
 	Flight flight = flightRepository.findOneById(flightId);
 	if (flight == null) {
-	    flightMessage += flightId;
-	    LOGGER.error(flightMessage);
-	    throw new NotFoundException(flightMessage);
+	    Object[] testArgs = {new Integer(flightId)};
+        String info = form.format(testArgs);
+        LOGGER.error(info);
+        throw new NotFoundException(info);
 	}
 	Seat seat = seatRepository.findOneByNumberAndFlight(seatNumber, flight);
 	if (seat == null) {
-	    String message = "There is no seat with id: " + seatNumber;
-	    LOGGER.error(message);
-	    throw new NotFoundException(message);
+	    MessageFormat form = new MessageFormat("There is no seat with number: {0} in flight with id: {1}");
+	    Object[] testArgs = {new Integer(seatNumber), new Integer(flight.getId())};
+	    String info = form.format(testArgs);
+	    LOGGER.error(info);
+	    throw new NotFoundException(info);
 	}
 	return seat;
     }
