@@ -44,10 +44,10 @@ public class SeatController {
      * Rezerwuje miejsce o podanym numerze
      * @param flightId identyfikator lotu
      * @param seatNumber numer miejsca w samolocie
-     * @return zarezerwowane miejsce
+     * @return miejsce ze zmienionym statusem
      */
     @PutMapping("/{seatNumber}")
     public Seat reservateSeat(@PathVariable int flightId, @PathVariable int seatNumber) {
-	return seatService.reservateSeat(seatService.getSeat(flightId, seatNumber));
+	return seatService.changeSeatStatus(seatService.getSeat(flightId, seatNumber));
     }
 }

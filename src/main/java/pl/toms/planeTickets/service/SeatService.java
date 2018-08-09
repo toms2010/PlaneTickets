@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import pl.toms.planeTickets.entity.Flight;
 import pl.toms.planeTickets.entity.Seat;
-import pl.toms.planeTickets.entity.Seat.SeatStatus;
 import pl.toms.planeTickets.exception.ApplicationException;
 import pl.toms.planeTickets.exception.NotFoundException;
 import pl.toms.planeTickets.repository.FlightRepository;
@@ -62,15 +61,38 @@ public class SeatService {
 	return seat;
     }
 
-    public Seat reservateSeat(Seat seat) {
-	if (!Seat.SeatStatus.F.getStatus().equals(seat.getStatus())) {
-	    String message = "Seat is not available: " + seat.getNumber();
-	    LOGGER.debug(message);
-	    throw new ApplicationException(message, HttpStatus.CONFLICT);
+    public Seat changeSeatStatus(Seat seat) {
+	if (seatCheck(seat)){
+	    seatRepository.save(seat);
+	    if (Seat.SeatStatus.R.getStatus().equals(seat.getStatus())) {
+	        LOGGER.debug("Reservated seat with number: " + seat.getNumber());
+	    }
+	    else 
+	        LOGGER.debug("Canceled reservation for seat with number: " + seat.getNumber());
 	}
-	seat.setStatus(SeatStatus.R.getStatus());
-	seatRepository.save(seat);
-	LOGGER.debug("Reservated seat with number: " + seat.getNumber());
 	return seat;
+    }
+    
+    /**
+     * Sprawdza czy można zarezerwować bądz usunąć rezerwację dla przekazanego miejsca.
+     * @param seat miejsce do zmiany statusu
+     * @return true jeśli można zmienić status
+     */
+    private boolean seatCheck(Seat seat){
+        Seat oldSeat = seatRepository.findOneById(seat.getId());
+        MessageFormat form = new MessageFormat("Seat with number {0} is {1}");
+        if (Seat.SeatStatus.N.getStatus().equals(oldSeat.getStatus())) {
+            Object[] testArgs = {oldSeat.getNumber(), Seat.SeatStatus.N.getName()};
+            String info = form.format(testArgs);
+            LOGGER.debug(info);
+            throw new ApplicationException(info, HttpStatus.CONFLICT);
+        }
+        if (seat.getStatus().equals(oldSeat.getStatus())) {
+            Object[] testArgs = {oldSeat.getNumber(), seat.getStatus()};
+            String info = form.format(testArgs);
+            LOGGER.debug(info);
+            throw new ApplicationException(info, HttpStatus.CONFLICT);
+        } 
+        return true;
     }
 }

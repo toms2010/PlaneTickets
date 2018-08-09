@@ -59,6 +59,12 @@ public class Seat extends BaseEntity {
     @Column(name = "status")
     private String status;
 
+    /**
+     * Status miejsca
+     */
+    @Column(name = "passager_temp")
+    private String passagerName;
+    
     public int getNumber() {
 	return number;
     }
@@ -81,5 +87,15 @@ public class Seat extends BaseEntity {
 
     public void setStatus(String status) {
 	this.status = status;
+    }
+
+    public String getPassagerName()
+    {
+        return passagerName;
+    }
+
+    public void setPassagerName(String passagerName)
+    {
+        this.passagerName = passagerName;
     }
 }
