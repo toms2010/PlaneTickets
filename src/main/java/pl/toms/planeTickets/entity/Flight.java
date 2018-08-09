@@ -19,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
-@Table(name = "fly")
+@Table(name = "flight")
 @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@flightId")
 public class Flight extends BaseEntity {
     /**
@@ -39,7 +39,7 @@ public class Flight extends BaseEntity {
     /**
      * Numer lotu
      */
-    @Column(name = "fly_number")
+    @Column(name = "flight_number")
     @NotEmpty
     private String flightNumber;
 

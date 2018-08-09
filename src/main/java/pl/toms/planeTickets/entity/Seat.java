@@ -50,7 +50,7 @@ public class Seat extends BaseEntity {
      */
     @JsonIdentityReference(alwaysAsId = true)
     @ManyToOne
-    @JoinColumn(name = "fly_id", nullable = false)
+    @JoinColumn(name = "flight_id", nullable = false)
     private Flight flight;
 
     /**
