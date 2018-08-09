@@ -20,37 +20,37 @@ public class PlaneService {
      * Wiadomość przy błędzie {@link NotFoundException}
      */
     private static String message = "There is no plane with id: ";
-    
-	@Autowired
-	private PlaneRepository planeRepository;
-	
-	public List<Plane> getPlanes() {
-		return (List<Plane>) planeRepository.findAll();
-	}
 
-	public Plane getPlane(int planeTypeId) {
-		Plane plane = planeRepository.findOneById(planeTypeId);
-		if (plane == null) {
-		    message += planeTypeId;
-	        LOGGER.error(message);
-	        throw new NotFoundException(message);
-		}		
-		return plane; 
-	}
+    @Autowired
+    private PlaneRepository planeRepository;
 
-	public Plane addPlaneType(Plane plane) {
-	    Plane newPlane = planeRepository.save(plane);
-	    LOGGER.debug("Created new plane with id: "+newPlane.getId());
-		return newPlane;
-	}
+    public List<Plane> getPlanes() {
+	return (List<Plane>) planeRepository.findAll();
+    }
 
-	public void deletePlane(int planeTypeId) {
-		if (planeRepository.findOneById(planeTypeId) == null) {
-	          message += planeTypeId;
-	          LOGGER.error(message);
-	          throw new NotFoundException(message);
-		}
-		planeRepository.deleteById(planeTypeId);
-	    LOGGER.debug("Deleted plane with id: " + planeTypeId);
+    public Plane getPlane(int planeTypeId) {
+	Plane plane = planeRepository.findOneById(planeTypeId);
+	if (plane == null) {
+	    message += planeTypeId;
+	    LOGGER.error(message);
+	    throw new NotFoundException(message);
 	}
+	return plane;
+    }
+
+    public Plane addPlaneType(Plane plane) {
+	Plane newPlane = planeRepository.save(plane);
+	LOGGER.debug("Created new plane with id: " + newPlane.getId());
+	return newPlane;
+    }
+
+    public void deletePlane(int planeTypeId) {
+	if (planeRepository.findOneById(planeTypeId) == null) {
+	    message += planeTypeId;
+	    LOGGER.error(message);
+	    throw new NotFoundException(message);
+	}
+	planeRepository.deleteById(planeTypeId);
+	LOGGER.debug("Deleted plane with id: " + planeTypeId);
+    }
 }

@@ -11,18 +11,17 @@ import org.springframework.stereotype.Component;
 @MappedSuperclass
 public class BaseEntity {
 
-	@Id
-	@GeneratedValue
-	@Column(name="Id", nullable=false)
-	private Integer id;
+    @Id
+    @GeneratedValue
+    @Column(name = "Id", nullable = false)
+    private Integer id;
 
-	public Integer getId() {
-		return id;
-	}
+    public Integer getId() {
+	return id;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
-	
-	
+    public void setId(Integer id) {
+	this.id = id;
+    }
+
 }

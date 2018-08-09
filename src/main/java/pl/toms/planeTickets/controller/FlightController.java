@@ -5,8 +5,6 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,42 +21,41 @@ import pl.toms.planeTickets.entity.Flight;
 import pl.toms.planeTickets.service.FlightService;
 
 @RestController
-@RequestMapping("api/")
+@RequestMapping("api/flights")
 public class FlightController {
-	// TODO logowanie , javadoc , optoionale
-	protected static final Logger LOGGER = LoggerFactory.getLogger(FlightController.class);
+    @Autowired
+    private FlightService flightService;
 
-	@Autowired
-	private FlightService flightService;
+    @GetMapping
+    public List<Flight> getAllFlights() {
+	return flightService.getAllFlights();
+    }
 
-	@GetMapping("/flights")
-	public List<Flight> getAllFlights() {
-		return flightService.getAllFlights();
-	}
+    @GetMapping("/{flightId}")
+    public Flight getFlight(@PathVariable int flightId) {
+	return flightService.getFlight(flightId);
+    }
 
-	@GetMapping("/flights/{flightId}")
-	public Flight getFlight(@PathVariable int flightId) {
-		return flightService.getFlight(flightId);
-	}
+    @PostMapping
+    public ResponseEntity<Flight> addFlight(@Valid @RequestBody Flight flight) {
+	Flight newFlight = flightService.addFlight(flight);
+	URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newFlight.getId())
+		.toUri();
+	return ResponseEntity.created(location).body(newFlight);
+    }
 
-	@PostMapping("/flights") 
-	public ResponseEntity<Flight> addFlight(@Valid @RequestBody Flight flight) {
-		Flight newFlight = flightService.addFlight(flight);
-		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newFlight.getId()).toUri();
-		return ResponseEntity.created(location).body(newFlight);
-	}
+    @PutMapping
+    public ResponseEntity<URI> updateFlight(@Valid @RequestBody Flight flight) {
+	Flight updatedFlight = flightService.updateFlight(flight);
+	URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+		.buildAndExpand(updatedFlight.getId()).toUri();
+	//TODO 304 (Not Modified)
+	return ResponseEntity.ok(location);
+    }
 
-	@PutMapping("/flights")
-	public ResponseEntity<URI> updateFlight(@Valid @RequestBody Flight flight) {
-		Flight updatedFlight = flightService.updateFlight(flight);
-		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(updatedFlight.getId()).toUri();
-		    ///304 (Not Modified)
-		return ResponseEntity.ok(location);
-	}
-
-	@DeleteMapping("/flights/{flightId}")
-	public ResponseEntity<Flight> deleteFlight(@PathVariable int flightId) {
-		flightService.deleteFlight(flightId);
-		return ResponseEntity.noContent().build();
-	}
+    @DeleteMapping("/{flightId}")
+    public ResponseEntity<Flight> deleteFlight(@PathVariable int flightId) {
+	flightService.deleteFlight(flightId);
+	return ResponseEntity.noContent().build();
+    }
 }
