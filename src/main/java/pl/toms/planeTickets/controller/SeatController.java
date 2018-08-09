@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,7 +21,7 @@ public class SeatController {
     private SeatService seatService;
 
     /**
-     * Pobiera listę miejc w locie o podanym identyfikatorze
+     * Pobiera listę miejsc w locie o podanym identyfikatorze
      * 
      * @param flightId identyfikator lotu
      * @return lista miejsc
@@ -49,8 +50,8 @@ public class SeatController {
      * @param seatNumber numer miejsca w samolocie
      * @return miejsce ze zmienionym statusem
      */
-    @PutMapping("/{seatNumber}")
-    public Seat reservateSeat(@PathVariable int flightId, @PathVariable int seatNumber) {
-        return seatService.changeSeatStatus(seatService.getSeat(flightId, seatNumber));
+    @PutMapping
+    public Seat reservateSeat(@PathVariable int flightId, @RequestBody Seat seat) {
+        return seatService.changeSeatStatus(flightId, seat);
     }
 }
