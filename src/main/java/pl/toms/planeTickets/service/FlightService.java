@@ -24,7 +24,7 @@ public class FlightService {
      * Wiadomość przy błędzie {@link NotFoundException}
      */
     MessageFormat form = new MessageFormat("There is no flights with id: {0}.");
-    
+
     @Autowired
     private FlightRepository flightRepository;
 
@@ -35,18 +35,18 @@ public class FlightService {
     private SeatRepository seatRepository;
 
     public List<Flight> getAllFlights() {
-	return flightRepository.findAll();
+        return flightRepository.findAll();
     }
 
     public Flight getFlight(int flightId) {
-	Flight flight = flightRepository.findOneById(flightId);
-	if (flight == null) {
-	    Object[] testArgs = {new Integer(flightId)};
-	    String info = form.format(testArgs);
-	    LOGGER.error(info);
-	    throw new NotFoundException(info);
-	}
-	return flight;
+        Flight flight = flightRepository.findOneById(flightId);
+        if (flight == null) {
+            Object[] testArgs = { new Integer(flightId) };
+            String info = form.format(testArgs);
+            LOGGER.error(info);
+            throw new NotFoundException(info);
+        }
+        return flight;
     }
 
     public Flight addFlight(Flight flight) {
@@ -58,46 +58,46 @@ public class FlightService {
     }
 
     public Flight updateFlight(Flight flight) {
-	return flightRepository.save(flight);
+        return flightRepository.save(flight);
     }
 
     public void deleteFlight(int flightId) {
-	if (flightRepository.findOneById(flightId) == null) {
-	    Object[] testArgs = {new Integer(flightId)};
-        String info = form.format(testArgs);
-	    LOGGER.error(info);
-	    throw new NotFoundException(info);
-	}
-	flightRepository.deleteById(flightId);
-	LOGGER.debug("Deleted flight with id: " + flightId);
+        if (flightRepository.findOneById(flightId) == null) {
+            Object[] testArgs = { new Integer(flightId) };
+            String info = form.format(testArgs);
+            LOGGER.error(info);
+            throw new NotFoundException(info);
+        }
+        flightRepository.deleteById(flightId);
+        LOGGER.debug("Deleted flight with id: " + flightId);
     }
 
     private void buildFlightSeats(Flight flight) {
-	Plane plane = flight.getPlane();
-	if (plane == null) {
-	    String message = "There is no information about the plane";
-	    LOGGER.error(message);
-	    throw new NotFoundException(message);
-	}
+        Plane plane = flight.getPlane();
+        if (plane == null) {
+            String message = "There is no information about the plane";
+            LOGGER.error(message);
+            throw new NotFoundException(message);
+        }
 
-	Integer seatsRows = plane.getSeatsRows();
-	if (seatsRows == null || seatsRows == 0) {
-	    Integer planeId = plane.getId();
-	    plane = planeRepository.findOneById(planeId);
-	    seatsRows = plane.getSeatsRows();
-	}
+        Integer seatsRows = plane.getSeatsRows();
+        if (seatsRows == null || seatsRows == 0) {
+            Integer planeId = plane.getId();
+            plane = planeRepository.findOneById(planeId);
+            seatsRows = plane.getSeatsRows();
+        }
 
-	int seatsInRow = plane.getSeatsInRow();
-	int seatNumber = 0;
-	for (int i = 0; i < seatsInRow; i++) {
-	    for (int j = 0; j < seatsRows; j++) {
-		Seat seat = new Seat();
-		seatNumber++;
-		seat.setFlight(flight);
-		seat.setNumber(seatNumber);
-		seat.setStatus(Seat.SeatStatus.F.getStatus());
-		seatRepository.save(seat);
-	    }
-	}
+        int seatsInRow = plane.getSeatsInRow();
+        int seatNumber = 0;
+        for (int i = 0; i < seatsInRow; i++) {
+            for (int j = 0; j < seatsRows; j++) {
+                Seat seat = new Seat();
+                seatNumber++;
+                seat.setFlight(flight);
+                seat.setNumber(seatNumber);
+                seat.setStatus(Seat.SeatStatus.F.getStatus());
+                seatRepository.save(seat);
+            }
+        }
     }
 }

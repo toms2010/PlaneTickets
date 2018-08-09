@@ -21,33 +21,36 @@ public class SeatController {
 
     /**
      * Pobiera listę miejc w locie o podanym identyfikatorze
+     * 
      * @param flightId identyfikator lotu
      * @return lista miejsc
      */
     @GetMapping
     public List<Seat> getSeats(@PathVariable int flightId) {
-	return seatService.getSeats(flightId);
+        return seatService.getSeats(flightId);
     }
 
     /**
-     * Pobiera miejsce o podanym numerze w locie o podanym identyfikatrze 
+     * Pobiera miejsce o podanym numerze w locie o podanym identyfikatrze
+     * 
      * @param flightId identyfikator lotu
      * @param seatNumber numer miejsca w samolocie
      * @return miejsce o podanym numerze
      */
     @GetMapping("/{seatNumber}")
     public Seat getSeat(@PathVariable int flightId, @PathVariable int seatNumber) {
-	return seatService.getSeat(flightId, seatNumber);
+        return seatService.getSeat(flightId, seatNumber);
     }
 
     /**
      * Rezerwuje miejsce o podanym numerze
+     * 
      * @param flightId identyfikator lotu
      * @param seatNumber numer miejsca w samolocie
      * @return miejsce ze zmienionym statusem
      */
     @PutMapping("/{seatNumber}")
     public Seat reservateSeat(@PathVariable int flightId, @PathVariable int seatNumber) {
-	return seatService.changeSeatStatus(seatService.getSeat(flightId, seatNumber));
+        return seatService.changeSeatStatus(seatService.getSeat(flightId, seatNumber));
     }
 }

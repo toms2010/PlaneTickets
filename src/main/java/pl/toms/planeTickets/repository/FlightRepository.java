@@ -8,13 +8,13 @@ import org.springframework.stereotype.Repository;
 import pl.toms.planeTickets.entity.Flight;
 
 @Repository
-public interface FlightRepository extends JpaRepository<Flight, Integer>{
-	
-	Flight findOneByFlightNumber(String number);
-	
-	List<Flight> findByDepartureAirport(String departureAirport);
-	
-	List<Flight> findByArrivalAirport(String departureAirport);
-	
-	Flight findOneById(Integer id);
+public interface FlightRepository extends JpaRepository<Flight, Integer> {
+
+    Flight findOneByFlightNumber(String number);
+
+    List<Flight> findByDepartureAirport(String departureAirport);
+
+    List<Flight> findByArrivalAirport(String departureAirport);
+
+    Flight findOneById(Integer id);
 }

@@ -32,67 +32,67 @@ public class SeatService {
     private FlightRepository flightRepository;
 
     public List<Seat> getSeats(Integer flightId) {
-	Flight flight = flightRepository.findOneById(flightId);
-	if (flight == null) {
-	    Object[] testArgs = {new Integer(flightId)};
-        String info = form.format(testArgs);
-	    LOGGER.error(info);
-	    throw new NotFoundException(info);
-	}
-	return seatRepository.findAllByFlight(flight);
+        Flight flight = flightRepository.findOneById(flightId);
+        if (flight == null) {
+            Object[] testArgs = { new Integer(flightId) };
+            String info = form.format(testArgs);
+            LOGGER.error(info);
+            throw new NotFoundException(info);
+        }
+        return seatRepository.findAllByFlight(flight);
     }
 
     public Seat getSeat(Integer flightId, Integer seatNumber) {
-	Flight flight = flightRepository.findOneById(flightId);
-	if (flight == null) {
-	    Object[] testArgs = {new Integer(flightId)};
-        String info = form.format(testArgs);
-        LOGGER.error(info);
-        throw new NotFoundException(info);
-	}
-	Seat seat = seatRepository.findOneByNumberAndFlight(seatNumber, flight);
-	if (seat == null) {
-	    MessageFormat form = new MessageFormat("There is no seat with number: {0} in flight with id: {1}");
-	    Object[] testArgs = {new Integer(seatNumber), new Integer(flight.getId())};
-	    String info = form.format(testArgs);
-	    LOGGER.error(info);
-	    throw new NotFoundException(info);
-	}
-	return seat;
+        Flight flight = flightRepository.findOneById(flightId);
+        if (flight == null) {
+            Object[] testArgs = { new Integer(flightId) };
+            String info = form.format(testArgs);
+            LOGGER.error(info);
+            throw new NotFoundException(info);
+        }
+        Seat seat = seatRepository.findOneByNumberAndFlight(seatNumber, flight);
+        if (seat == null) {
+            MessageFormat form = new MessageFormat("There is no seat with number: {0} in flight with id: {1}");
+            Object[] testArgs = { new Integer(seatNumber), new Integer(flight.getId()) };
+            String info = form.format(testArgs);
+            LOGGER.error(info);
+            throw new NotFoundException(info);
+        }
+        return seat;
     }
 
     public Seat changeSeatStatus(Seat seat) {
-	if (seatCheck(seat)){
-	    seatRepository.save(seat);
-	    if (Seat.SeatStatus.R.getStatus().equals(seat.getStatus())) {
-	        LOGGER.debug("Reservated seat with number: " + seat.getNumber());
-	    }
-	    else 
-	        LOGGER.debug("Canceled reservation for seat with number: " + seat.getNumber());
-	}
-	return seat;
+        if (seatCheck(seat)) {
+            seatRepository.save(seat);
+            if (Seat.SeatStatus.R.getStatus().equals(seat.getStatus())) {
+                LOGGER.debug("Reservated seat with number: " + seat.getNumber());
+            } else
+                LOGGER.debug("Canceled reservation for seat with number: " + seat.getNumber());
+        }
+        return seat;
     }
-    
+
     /**
      * Sprawdza czy można zarezerwować bądz usunąć rezerwację dla przekazanego miejsca.
+     * 
      * @param seat miejsce do zmiany statusu
      * @return true jeśli można zmienić status
      */
-    private boolean seatCheck(Seat seat){
+    private boolean seatCheck(Seat seat) {
         Seat oldSeat = seatRepository.findOneById(seat.getId());
         MessageFormat form = new MessageFormat("Seat with number {0} is {1}");
         if (Seat.SeatStatus.N.getStatus().equals(oldSeat.getStatus())) {
-            Object[] testArgs = {oldSeat.getNumber(), Seat.SeatStatus.N.getName()};
+            Object[] testArgs = { oldSeat.getNumber(), Seat.SeatStatus.N.getName() };
             String info = form.format(testArgs);
             LOGGER.debug(info);
             throw new ApplicationException(info, HttpStatus.CONFLICT);
         }
         if (seat.getStatus().equals(oldSeat.getStatus())) {
-            Object[] testArgs = {oldSeat.getNumber(), seat.getStatus()};
+            Object[] testArgs = { oldSeat.getNumber(), seat.getStatus() };
             String info = form.format(testArgs);
             LOGGER.debug(info);
             throw new ApplicationException(info, HttpStatus.CONFLICT);
-        } 
+        }
         return true;
     }
 }

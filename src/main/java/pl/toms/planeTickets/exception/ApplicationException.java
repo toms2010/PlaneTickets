@@ -13,39 +13,40 @@ public class ApplicationException extends RuntimeException {
 
     /**
      * Błąd w trakcie działania aplikacji.
+     * 
      * @param message komunikat o błędzie
      */
     public ApplicationException(String message) {
-	super(message);
+        super(message);
     }
 
     public ApplicationException() {
-	super();
+        super();
     }
 
     public ApplicationException(String message, HttpStatus status) {
-	super(message);
-	this.status = status;
+        super(message);
+        this.status = status;
     }
 
     public ApplicationException(String message, Throwable cause, boolean enableSuppression,
-	    boolean writableStackTrace) {
-	super(message, cause, enableSuppression, writableStackTrace);
+            boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
     }
 
     public ApplicationException(String message, Throwable cause) {
-	super(message, cause);
+        super(message, cause);
     }
 
     public ApplicationException(Throwable cause) {
-	super(cause);
+        super(cause);
     }
 
     public HttpStatus getStatus() {
-	return status;
+        return status;
     }
 
     public void setStatus(HttpStatus status) {
-	this.status = status;
+        this.status = status;
     }
 }

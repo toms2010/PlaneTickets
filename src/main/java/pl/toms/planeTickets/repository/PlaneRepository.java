@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import pl.toms.planeTickets.entity.Plane;
 
 @Repository
-public interface PlaneRepository extends JpaRepository<Plane, Integer>{
+public interface PlaneRepository extends JpaRepository<Plane, Integer> {
 
-	Plane findOneById(Integer id);
+    Plane findOneById(Integer id);
 }

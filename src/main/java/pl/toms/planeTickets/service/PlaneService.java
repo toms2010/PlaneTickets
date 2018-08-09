@@ -26,34 +26,34 @@ public class PlaneService {
     private PlaneRepository planeRepository;
 
     public List<Plane> getPlanes() {
-	return (List<Plane>) planeRepository.findAll();
+        return (List<Plane>) planeRepository.findAll();
     }
 
     public Plane getPlane(int planeTypeId) {
-	Plane plane = planeRepository.findOneById(planeTypeId);
-	if (plane == null) {
-	    Object[] testArgs = {new Integer(planeTypeId)};
-	    String info = form.format(testArgs);
-	    LOGGER.error(info);
-	    throw new NotFoundException(info);
-	}
-	return plane;
+        Plane plane = planeRepository.findOneById(planeTypeId);
+        if (plane == null) {
+            Object[] testArgs = { new Integer(planeTypeId) };
+            String info = form.format(testArgs);
+            LOGGER.error(info);
+            throw new NotFoundException(info);
+        }
+        return plane;
     }
 
     public Plane addPlaneType(Plane plane) {
-	Plane newPlane = planeRepository.save(plane);
-	LOGGER.debug("Created new plane with id: " + newPlane.getId());
-	return newPlane;
+        Plane newPlane = planeRepository.save(plane);
+        LOGGER.debug("Created new plane with id: " + newPlane.getId());
+        return newPlane;
     }
 
     public void deletePlane(int planeTypeId) {
-	if (planeRepository.findOneById(planeTypeId) == null) {
-        Object[] testArgs = {new Integer(planeTypeId)};
-        String info = form.format(testArgs);
-	    LOGGER.error(info);
-	    throw new NotFoundException(info);
-	}
-	planeRepository.deleteById(planeTypeId);
-	LOGGER.debug("Deleted plane with id: " + planeTypeId);
+        if (planeRepository.findOneById(planeTypeId) == null) {
+            Object[] testArgs = { new Integer(planeTypeId) };
+            String info = form.format(testArgs);
+            LOGGER.error(info);
+            throw new NotFoundException(info);
+        }
+        planeRepository.deleteById(planeTypeId);
+        LOGGER.debug("Deleted plane with id: " + planeTypeId);
     }
 }

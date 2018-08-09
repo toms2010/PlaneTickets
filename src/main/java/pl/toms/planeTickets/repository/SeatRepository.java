@@ -9,12 +9,12 @@ import pl.toms.planeTickets.entity.Flight;
 import pl.toms.planeTickets.entity.Seat;
 
 @Repository
-public interface SeatRepository extends JpaRepository<Seat, Integer>{
+public interface SeatRepository extends JpaRepository<Seat, Integer> {
 
     Seat findOneById(Integer id);
-    
+
     List<Seat> findAllByFlight(Flight flight);
-    
+
     Seat findOneByNumberAndFlight(Integer number, Flight flight);
-    
+
 }
