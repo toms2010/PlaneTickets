@@ -32,7 +32,6 @@ public class SeatService {
      * 
      * @param flightId identyfikator lotu
      * @return lista miejsc
-     * @throws NotFoundException
      */
     public List<Seat> getSeats(Integer flightId) {
         Flight flight = getFlightById(flightId);
@@ -45,7 +44,7 @@ public class SeatService {
      * @param flightId identyfikator lotu
      * @param seatNumber numer miejsca w samolocie
      * @return miejsce o podanym numerze
-     * @throws NotFoundException
+     * @throws NotFoundException gdzie nie ma miejsca o podanym numerze w locie
      */
     public Seat getSeat(Integer flightId, Integer seatNumber) {
         Flight flight = getFlightById(flightId);
@@ -62,18 +61,20 @@ public class SeatService {
 
     /**
      * Zmienia status przekazanego miejsca oraz dopisuje/usuwa pasażera
-     * @param seat obiekt miejsca
+     * @param newSeat obiekt miejsca
      * @return zmodyfikowane miejsce
      */
-    public Seat changeSeatStatus(int flightId, Seat seat) {
+    public Seat changeSeatStatus(int flightId, Seat newSeat) {
         Flight flight = getFlightById(flightId);
-        Seat oldSeat = seatRepository.findOneByNumberAndFlight(seat.getNumber(), flight);
-        seatCheck(oldSeat, seat);
+        Seat oldSeat = seatRepository.findOneByNumberAndFlight(newSeat.getNumber(), flight);
+        seatCheck(oldSeat, newSeat);
         
-        String seatStatus = seat.getStatus();
+        String seatStatus = newSeat.getStatus();
         oldSeat.setStatus(seatStatus);
-        //if (SeatseatStatus) // TODO JAk anulowanie to name null
-        oldSeat.setPassagerName(seat.getPassagerName());
+        if (SeatStatus.F.getStatus().equals(seatStatus))
+            oldSeat.setPassagerName(null);
+        else
+            oldSeat.setPassagerName(newSeat.getPassagerName());
         seatRepository.save(oldSeat);
         
         if (Seat.SeatStatus.R.getStatus().equals(oldSeat.getStatus())) {
@@ -88,6 +89,7 @@ public class SeatService {
      * Pobiera lot po przekazanym identyfikatorze a następnie sprawdza czy taki lot istnieje
      * @param flightId identyfikator lotu
      * @return obiekt lotu
+     * @throws NotFoundException gdzy nie istnieje lot o podanym identyfikatorze
      */
     private Flight getFlightById(int flightId) {
         MessageFormat form = new MessageFormat("There is no flights with id: {0}.");
@@ -104,10 +106,11 @@ public class SeatService {
     /**
      * Sprawdza czy można zarezerwować bądz usunąć rezerwację dla przekazanego miejsca.
      * 
-     * @param seat miejsce do zmiany statusu
+     * @param newSeat miejsce do zmiany statusu
      * @return true jeśli można zmienić status
+     * @throws ApplicationException gdzy nie mozna zmienić na wskazany status
      */
-    private void seatCheck(Seat oldSeat, Seat seat) {
+    private void seatCheck(Seat oldSeat, Seat newSeat) {
         MessageFormat form = new MessageFormat("Seat with number {0} is {1}");
         if (Seat.SeatStatus.N.getStatus().equals(oldSeat.getStatus())) {
             Object[] testArgs = { oldSeat.getNumber(), Seat.SeatStatus.N.getName() };
@@ -115,8 +118,8 @@ public class SeatService {
             LOGGER.debug(info);
             throw new ApplicationException(info, HttpStatus.CONFLICT);
         }
-        if (seat.getStatus().equals(oldSeat.getStatus())) {
-            Object[] testArgs = { oldSeat.getNumber(), SeatStatus.valueOf(seat.getStatus()).getName() };
+        if (newSeat.getStatus().equals(oldSeat.getStatus())) {
+            Object[] testArgs = { oldSeat.getNumber(), SeatStatus.valueOf(newSeat.getStatus()).getName() };
             String info = form.format(testArgs);
             LOGGER.debug(info);
             throw new ApplicationException(info, HttpStatus.CONFLICT);
