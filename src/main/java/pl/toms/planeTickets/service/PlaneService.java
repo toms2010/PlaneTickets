@@ -3,7 +3,6 @@ package pl.toms.planeTickets.service;
 import java.text.MessageFormat;
 import java.util.List;
 
-import org.hibernate.exception.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,10 +28,21 @@ public class PlaneService {
     @Autowired
     private PlaneRepository planeRepository;
 
+    /**
+     * Pobiera wszystkie rodzaje samolotów.
+     * 
+     * @return lista ze wszystkimi rodzajami samolotów
+     */
     public List<Plane> getPlanes() {
         return (List<Plane>) planeRepository.findAll();
     }
 
+    /**
+     * Pobiera rodzaj samolotu o podanym identyfikatorze.
+     * 
+     * @param planeTypeId identyfikator rodzaju samolotu
+     * @return obiekt rodzaju samolotu
+     */
     public Plane getPlane(int planeTypeId) {
         Plane plane = planeRepository.findOneById(planeTypeId);
         if (plane == null) {
@@ -44,12 +54,25 @@ public class PlaneService {
         return plane;
     }
 
+    /**
+     * Zapisuje lub modyfikuje przakazanym obiekt do bazy danych.
+     * 
+     * @param plane obiekt do zapisu lub modyfikacji
+     * @return obiekt typu samolotu
+     */
     public Plane addPlaneType(Plane plane) {
         Plane newPlane = planeRepository.save(plane);
         LOGGER.debug("Created new plane with id: " + newPlane.getId());
         return newPlane;
     }
 
+    /**
+     * Usuwa rodzaj samolotu o wskazanym identyfikatorze.
+     * 
+     * @param planeTypeId identyfikator rodzaju samolotu
+     * @throws ApplicationException gdy nie mozna usunąć bo powiązany z lotem
+     * @throws NotFoundException gdy nie ma takiego typu samolotu
+     */
     public void deletePlane(int planeTypeId) {
         if (planeRepository.findOneById(planeTypeId) == null) {
             Object[] testArgs = { new Integer(planeTypeId) };
