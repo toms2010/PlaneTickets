@@ -15,28 +15,31 @@ public class Seat extends BaseEntity {
      * Statusy miejsc
      */
     public static enum SeatStatus {
-	/** Free */
-	F("F", "Free"),
-	/** Reserved */
-	R("R", "Reserved"),
-	/** Not avable */
-	N("N", "Not avable");
+        /** Free */
+        F("F", "Free"),
+        /** Reserved */
+        R("R", "Reserved"),
+        /** Not avable */
+        N("N", "Not avable");
 
-	private String status;
-	private String name;
+        private String status;
+        private String name;
 
-	private SeatStatus(String status, String name) {
-	    this.status = status;
-	    this.name = name;
-	}
+        private SeatStatus(String status, String name)
+        {
+            this.status = status;
+            this.name = name;
+        }
 
-	public String getStatus() {
-	    return status;
-	}
+        public String getStatus()
+        {
+            return status;
+        }
 
-	public String getName() {
-	    return name;
-	}
+        public String getName()
+        {
+            return name;
+        }
     }
 
     /**
@@ -60,7 +63,7 @@ public class Seat extends BaseEntity {
     private String status;
 
     /**
-     * Status miejsca
+     * Nazwa pasażera (tymczasowo gdzye nie istnieje jeszcze encja pasażera)
      */
     @Column(name = "passager_temp")
     private String passagerName;
@@ -97,5 +100,12 @@ public class Seat extends BaseEntity {
     public void setPassagerName(String passagerName)
     {
         this.passagerName = passagerName;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Seat [number=" + number + ", flight=" + flight + ", status=" + status + ", passagerName=" + passagerName + ", toString()=" + super.toString()
+            + "]";
     }
 }

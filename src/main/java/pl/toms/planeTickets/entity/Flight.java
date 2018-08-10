@@ -126,4 +126,11 @@ public class Flight extends BaseEntity {
     public void setSeats(List<Seat> seats) {
 	this.seats = seats;
     }
+
+    @Override
+    public String toString()
+    {
+        return "Flight [departureAirport=" + departureAirport + ", arrivalAirport=" + arrivalAirport + ", flightNumber=" + flightNumber + ", departureDate="
+            + departureDate + ", flightTime=" + flightTime + ", plane=" + plane + ", seats=" + seats + ", toString()=" + super.toString() + "]";
+    }
 }

@@ -91,4 +91,11 @@ public class Plane extends BaseEntity {
     public void setFlights(List<Flight> flights) {
 	this.flights = flights;
     }
+
+    @Override
+    public String toString()
+    {
+        return "Plane [brand=" + brand + ", model=" + model + ", seatsRows=" + seatsRows + ", premiumRows=" + premiumRows + ", seatsInRow=" + seatsInRow
+            + ", flights=" + flights + ", toString()=" + super.toString() + "]";
+    }
 }

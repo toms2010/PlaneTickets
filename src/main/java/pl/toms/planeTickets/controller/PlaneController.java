@@ -37,7 +37,7 @@ public class PlaneController {
     }
 
     /**
-     * Pobiera rodzxaj samolotu o podanym identyfikatorze.
+     * Pobiera rodzaj samolotu o podanym identyfikatorze.
      * 
      * @param planeTypeId identyfikator rodzaju samolotu
      * @return obiekt rodzaju samolotu
@@ -51,7 +51,7 @@ public class PlaneController {
      * Zapisuje przekazany rodzaj samolotu.
      * 
      * @param plane obiekt rodzaju samolotu do zapisania
-     * @return odpowiez zawierająca zapisany obiekt, status odpowiedzi oraz linki.
+     * @return odpowiedz zawierająca zapisany obiekt, status odpowiedzi oraz linki.
      */
     @PostMapping
     public ResponseEntity<Plane> addPlaneType(@Valid @RequestBody Plane plane) {
@@ -70,10 +70,8 @@ public class PlaneController {
     @PutMapping
     public ResponseEntity<URI> updatePlane(@RequestBody Plane plane) {
         Plane updatedPlane = planeService.addPlaneType(plane);
-
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(updatedPlane.getId()).toUri();
-
         return ResponseEntity.ok(location);
     }
 
@@ -81,12 +79,11 @@ public class PlaneController {
      * Usuwa rodzaj samolotu o wskazanym identyfikatorze.
      * 
      * @param planeTypeId identyfikator rodzaju samolotu
-     * @return odpowiedz
+     * @return odpowiedz noContent
      */
     @DeleteMapping("/{planeTypeId}")
     public ResponseEntity<Plane> deletePlane(@PathVariable int planeTypeId) {
         planeService.deletePlane(planeTypeId);
-
         return ResponseEntity.noContent().build();
     }
 }
