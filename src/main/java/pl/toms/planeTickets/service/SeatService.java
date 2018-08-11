@@ -71,10 +71,14 @@ public class SeatService {
         
         String seatStatus = newSeat.getStatus();
         oldSeat.setStatus(seatStatus);
-        if (SeatStatus.F.getStatus().equals(seatStatus))
+        if (!SeatStatus.R.getStatus().equals(seatStatus))
             oldSeat.setPassagerName(null);
-        else
+        else {
+            String passagerName = newSeat.getPassagerName();
+            if (passagerName == null)
+                throw new ApplicationException("Passager name can not be null", HttpStatus.UNPROCESSABLE_ENTITY);
             oldSeat.setPassagerName(newSeat.getPassagerName());
+        }
         seatRepository.save(oldSeat);
         
         if (Seat.SeatStatus.R.getStatus().equals(oldSeat.getStatus())) {

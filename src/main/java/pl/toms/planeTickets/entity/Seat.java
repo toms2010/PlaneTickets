@@ -67,7 +67,7 @@ public class Seat extends BaseEntity {
     private String status;
 
     /**
-     * Nazwa pasażera (tymczasowo gdzye nie istnieje jeszcze encja pasażera)
+     * Nazwa pasażera (tymczasowo bo nie istnieje jeszcze encja pasażera)
      */
     @Column(name = "passager_temp")
     private String passagerName;
