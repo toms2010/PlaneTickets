@@ -16,7 +16,7 @@ public class Seat extends BaseEntity {
     /**
      * Statusy miejsc
      */
-    public static enum SeatStatus {
+    public enum SeatStatus {
         /** Free */
         F("F", "Free"),
         /** Reserved */

@@ -34,7 +34,7 @@ public class PlaneService {
      * @return lista ze wszystkimi rodzajami samolotów
      */
     public List<Plane> getPlanes() {
-        return (List<Plane>) planeRepository.findAll();
+        return planeRepository.findAll();
     }
 
     /**
@@ -46,7 +46,7 @@ public class PlaneService {
     public Plane getPlane(int planeTypeId) {
         Plane plane = planeRepository.findOneById(planeTypeId);
         if (plane == null) {
-            Object[] testArgs = { new Integer(planeTypeId) };
+            Object[] testArgs = { planeTypeId };
             String info = form.format(testArgs);
             LOGGER.error(info);
             throw new NotFoundException(info);
@@ -75,21 +75,21 @@ public class PlaneService {
      */
     public void deletePlane(int planeTypeId) {
         if (planeRepository.findOneById(planeTypeId) == null) {
-            Object[] testArgs = { new Integer(planeTypeId) };
+            Object[] testArgs = { planeTypeId };
             String info = form.format(testArgs);
             LOGGER.error(info);
             throw new NotFoundException(info);
         }
         try {
             planeRepository.deleteById(planeTypeId);
-            LOGGER.debug("Deleted plane with id: " + planeTypeId);
+            LOGGER.debug("Deleted plane with id: {0}.", planeTypeId);
         }
         catch (Exception e) {
             List<Flight> flightsList = planeRepository.findOneById(planeTypeId).getFlights();
-            if (!flightsList.isEmpty() && flightsList.size()>0) {
-                MessageFormat form = new MessageFormat("Can not delete plane type with id: {0}. {1} flights is/are related to this plane type");
+            if (flightsList != null && !flightsList.isEmpty()) {
+                MessageFormat messageFormat = new MessageFormat("Can not delete plane type with id: {0}. {1} flights is/are related to this plane type");
                 Object[] testArgs = {planeTypeId, flightsList.size()};
-                String info = form.format(testArgs);
+                String info = messageFormat.format(testArgs);
                 LOGGER.error(info);
                 throw new ApplicationException(info, HttpStatus.CONFLICT);
             }

@@ -41,7 +41,7 @@ public class FlightService {
     public Flight getFlight(int flightId) {
         Flight flight = flightRepository.findOneById(flightId);
         if (flight == null) {
-            Object[] testArgs = { new Integer(flightId) };
+            Object[] testArgs = { flightId };
             String info = form.format(testArgs);
             LOGGER.error(info);
             throw new NotFoundException(info);
@@ -58,12 +58,13 @@ public class FlightService {
     }
 
     public Flight updateFlight(Flight flight) {
+        LOGGER.debug("Updated flight with id: " + flight.getId());
         return flightRepository.save(flight);
     }
 
     public void deleteFlight(int flightId) {
         if (flightRepository.findOneById(flightId) == null) {
-            Object[] testArgs = { new Integer(flightId) };
+            Object[] testArgs = { flightId };
             String info = form.format(testArgs);
             LOGGER.error(info);
             throw new NotFoundException(info);
