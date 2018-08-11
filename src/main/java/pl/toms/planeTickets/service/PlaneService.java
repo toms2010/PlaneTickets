@@ -55,15 +55,32 @@ public class PlaneService {
     }
 
     /**
-     * Zapisuje lub modyfikuje przakazanym obiekt do bazy danych.
+     * Zapisuje przakazanym obiekt do bazy danych.
      * 
-     * @param plane obiekt do zapisu lub modyfikacji
+     * @param plane obiekt do zapisu
      * @return obiekt typu samolotu
      */
     public Plane addPlaneType(Plane plane) {
         Plane newPlane = planeRepository.save(plane);
         LOGGER.debug("Created new plane with id: " + newPlane.getId());
         return newPlane;
+    }
+    
+    /**
+     * Modyfikuje przakazanym typ samolotu do bazy danych jeśli nie ma przypisanych do niego lotów.
+     * 
+     * @param plane obiekt do zapisu
+     * @return obiekt typu samolotu po modyfikacji
+     * @throws ApplicationException gdzy typ samolotu ma przypisane loty
+     */
+    public Plane modifyPlane(Plane plane) {
+        List<Flight> flights = plane.getFlights();
+        if (!flights.isEmpty()) {
+            throw new ApplicationException("Can not modify plane type whit assigned flights" , HttpStatus.CONFLICT);
+        }
+        Plane newPlane = planeRepository.save(plane);
+        LOGGER.debug("Modify plane type with id: " + newPlane.getId());
+        return newPlane; 
     }
 
     /**

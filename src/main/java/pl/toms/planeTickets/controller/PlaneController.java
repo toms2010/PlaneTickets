@@ -69,7 +69,7 @@ public class PlaneController {
      */
     @PutMapping
     public ResponseEntity<URI> updatePlane(@RequestBody Plane plane) {
-        Plane updatedPlane = planeService.addPlaneType(plane);
+        Plane updatedPlane = planeService.modifyPlane(plane);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(updatedPlane.getId()).toUri();
         return ResponseEntity.ok(location);
