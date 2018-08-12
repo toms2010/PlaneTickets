@@ -56,8 +56,7 @@ public class PlaneController {
     @PostMapping
     public ResponseEntity<Plane> addPlaneType(@Valid @RequestBody Plane plane) {
         Plane newPlane = planeService.addPlaneType(plane);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newPlane.getId())
-                .toUri();
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newPlane.getId()).toUri();
         return ResponseEntity.created(location).body(newPlane);
     }
 
@@ -70,8 +69,7 @@ public class PlaneController {
     @PutMapping
     public ResponseEntity<URI> updatePlane(@RequestBody Plane plane) {
         Plane updatedPlane = planeService.modifyPlane(plane);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-                .buildAndExpand(updatedPlane.getId()).toUri();
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(updatedPlane.getId()).toUri();
         return ResponseEntity.ok(location);
     }
 

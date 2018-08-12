@@ -27,19 +27,16 @@ public class Seat extends BaseEntity {
         private String status;
         private String name;
 
-        private SeatStatus(String status, String name)
-        {
+        private SeatStatus(String status, String name) {
             this.status = status;
             this.name = name;
         }
 
-        public String getStatus()
-        {
+        public String getStatus() {
             return status;
         }
 
-        public String getName()
-        {
+        public String getName() {
             return name;
         }
     }
@@ -62,7 +59,7 @@ public class Seat extends BaseEntity {
     /**
      * Status miejsca
      */
-    @Size(min=1, max=1)
+    @Size(min = 1, max = 1)
     @Column(name = "status")
     private String status;
 
@@ -71,45 +68,42 @@ public class Seat extends BaseEntity {
      */
     @Column(name = "passager_temp")
     private String passagerName;
-    
+
     public int getNumber() {
-	return number;
+        return number;
     }
 
     public void setNumber(int number) {
-	this.number = number;
+        this.number = number;
     }
 
     public Flight getFlight() {
-	return flight;
+        return flight;
     }
 
     public void setFlight(Flight flight) {
-	this.flight = flight;
+        this.flight = flight;
     }
 
     public String getStatus() {
-	return status;
+        return status;
     }
 
     public void setStatus(String status) {
-	this.status = status;
+        this.status = status;
     }
 
-    public String getPassagerName()
-    {
+    public String getPassagerName() {
         return passagerName;
     }
 
-    public void setPassagerName(String passagerName)
-    {
+    public void setPassagerName(String passagerName) {
         this.passagerName = passagerName;
     }
 
     @Override
-    public String toString()
-    {
-        return "Seat [number=" + number + ", flight=" + flight + ", status=" + status + ", passagerName=" + passagerName + ", toString()=" + super.toString()
-            + "]";
+    public String toString() {
+        return "Seat [number=" + number + ", flight=" + flight + ", status=" + status + ", passagerName=" + passagerName + ", toString()="
+                + super.toString() + "]";
     }
 }

@@ -19,7 +19,7 @@ public class ApplicationException extends RuntimeException {
     public ApplicationException(String message) {
         super(message);
     }
-    
+
     public ApplicationException() {
         super();
     }
@@ -35,8 +35,7 @@ public class ApplicationException extends RuntimeException {
         this.status = status;
     }
 
-    public ApplicationException(String message, Throwable cause, boolean enableSuppression,
-            boolean writableStackTrace) {
+    public ApplicationException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 

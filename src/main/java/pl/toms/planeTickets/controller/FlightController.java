@@ -56,8 +56,7 @@ public class FlightController {
     @PostMapping
     public ResponseEntity<Flight> addFlight(@Valid @RequestBody Flight flight) {
         Flight newFlight = flightService.addFlight(flight);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newFlight.getId())
-                .toUri();
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newFlight.getId()).toUri();
         return ResponseEntity.created(location).body(newFlight);
     }
 

@@ -29,8 +29,8 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
     }
 
     @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
-            HttpHeaders headers, HttpStatus status, WebRequest request) {
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status,
+            WebRequest request) {
         ErrorDetails errorDetails = new ErrorDetails(new Date(), "Validation Failed", ex.getBindingResult().toString());
         return new ResponseEntity<>(errorDetails, HttpStatus.UNPROCESSABLE_ENTITY);
     }

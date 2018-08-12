@@ -45,57 +45,56 @@ public class Plane extends BaseEntity {
     private List<Flight> flights;
 
     public String getBrand() {
-	return brand;
+        return brand;
     }
 
     public void setBrand(String brand) {
-	this.brand = brand;
+        this.brand = brand;
     }
 
     public String getModel() {
-	return model;
+        return model;
     }
 
     public void setModel(String model) {
-	this.model = model;
+        this.model = model;
     }
 
     public int getSeatsRows() {
-	return seatsRows;
+        return seatsRows;
     }
 
     public void setSeatsRows(int seatsRows) {
-	this.seatsRows = seatsRows;
+        this.seatsRows = seatsRows;
     }
 
     public int getPremiumRows() {
-	return premiumRows;
+        return premiumRows;
     }
 
     public void setPremiumRows(int premiumRows) {
-	this.premiumRows = premiumRows;
+        this.premiumRows = premiumRows;
     }
 
     public int getSeatsInRow() {
-	return seatsInRow;
+        return seatsInRow;
     }
 
     public void setSeatsInRow(int seatsInRow) {
-	this.seatsInRow = seatsInRow;
+        this.seatsInRow = seatsInRow;
     }
 
     public List<Flight> getFlights() {
-	return flights;
+        return flights;
     }
 
     public void setFlights(List<Flight> flights) {
-	this.flights = flights;
+        this.flights = flights;
     }
 
     @Override
-    public String toString()
-    {
-        return "Plane [brand=" + brand + ", model=" + model + ", seatsRows=" + seatsRows + ", premiumRows=" + premiumRows + ", seatsInRow=" + seatsInRow
-            + ", flights=" + flights + ", toString()=" + super.toString() + "]";
+    public String toString() {
+        return "Plane [brand=" + brand + ", model=" + model + ", seatsRows=" + seatsRows + ", premiumRows=" + premiumRows + ", seatsInRow="
+                + seatsInRow + ", flights=" + flights + ", toString()=" + super.toString() + "]";
     }
 }

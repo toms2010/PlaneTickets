@@ -68,7 +68,7 @@ public class PlaneService {
         LOGGER.debug("Created new plane with id: " + newPlane.getId());
         return newPlane;
     }
-    
+
     /**
      * Modyfikuje przakazanym typ samolotu do bazy danych jeśli nie ma przypisanych do niego lotów.
      * 
@@ -79,11 +79,11 @@ public class PlaneService {
     public Plane modifyPlane(Plane plane) {
         List<Flight> flights = plane.getFlights();
         if (!flights.isEmpty()) {
-            throw new ApplicationException("Can not modify plane type whit assigned flights" , HttpStatus.CONFLICT);
+            throw new ApplicationException("Can not modify plane type whit assigned flights", HttpStatus.CONFLICT);
         }
         Plane newPlane = planeRepository.save(plane);
         LOGGER.debug("Modify plane type with id: " + newPlane.getId());
-        return newPlane; 
+        return newPlane;
     }
 
     /**
@@ -103,17 +103,17 @@ public class PlaneService {
         try {
             planeRepository.deleteById(planeTypeId);
             LOGGER.debug("Deleted plane with id: {0}.", planeTypeId);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             List<Flight> flightsList = planeRepository.findOneById(planeTypeId).getFlights();
             if (flightsList != null && !flightsList.isEmpty()) {
-                MessageFormat messageFormat = new MessageFormat("Can not delete plane type with id: {0}. {1} flights is/are related to this plane type");
-                Object[] testArgs = {planeTypeId, flightsList.size()};
+                MessageFormat messageFormat = new MessageFormat(
+                        "Can not delete plane type with id: {0}. {1} flights is/are related to this plane type");
+                Object[] testArgs = { planeTypeId, flightsList.size() };
                 String info = messageFormat.format(testArgs);
                 LOGGER.error(info);
                 throw new ApplicationException(info, HttpStatus.CONFLICT);
-            }
-            else throw e;
+            } else
+                throw e;
         }
     }
 }

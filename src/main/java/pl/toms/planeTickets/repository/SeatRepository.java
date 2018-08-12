@@ -13,5 +13,4 @@ public interface SeatRepository extends BaseRepository<Seat, Integer> {
     List<Seat> findAllByFlight(Flight flight);
 
     Seat findOneByNumberAndFlight(Integer number, Flight flight);
-
 }

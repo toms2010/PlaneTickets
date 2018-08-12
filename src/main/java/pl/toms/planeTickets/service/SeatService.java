@@ -40,7 +40,7 @@ public class SeatService {
         Flight flight = getFlightById(flightId);
         return seatRepository.findAllByFlight(flight);
     }
-    
+
     /**
      * Pobiera miejsce o podanym numerze w locie o podanym identyfikatrze
      * 
@@ -54,7 +54,7 @@ public class SeatService {
         Seat seat = seatRepository.findOneByNumberAndFlight(seatNumber, flight);
         if (seat == null) {
             MessageFormat form = new MessageFormat("There is no seat with number: {0} in flight with id: {1}");
-            Object[] testArgs = {seatNumber, flight.getId()};
+            Object[] testArgs = { seatNumber, flight.getId() };
             String info = form.format(testArgs);
             LOGGER.error(info);
             throw new NotFoundException(info);
@@ -64,6 +64,7 @@ public class SeatService {
 
     /**
      * Zmienia status przekazanego miejsca oraz dopisuje/usuwa pasażera
+     * 
      * @param newSeat obiekt miejsca
      * @return zmodyfikowane miejsce
      */
@@ -71,7 +72,7 @@ public class SeatService {
         Flight flight = getFlightById(flightId);
         Seat oldSeat = seatRepository.findOneByNumberAndFlight(newSeat.getNumber(), flight);
         seatCheck(oldSeat, newSeat);
-        
+
         String seatStatus = newSeat.getStatus();
         oldSeat.setStatus(seatStatus);
         if (!SeatStatus.R.getStatus().equals(seatStatus))
@@ -82,7 +83,7 @@ public class SeatService {
                 throw new ApplicationException("Passager name can not be null", HttpStatus.UNPROCESSABLE_ENTITY);
             oldSeat.setPassagerName(newSeat.getPassagerName());
         }
-        
+
         if (Seat.SeatStatus.R.getStatus().equals(oldSeat.getStatus())) {
             LOGGER.debug("Reservated seat with number: " + oldSeat.getNumber());
         } else
@@ -93,6 +94,7 @@ public class SeatService {
 
     /**
      * Pobiera lot po przekazanym identyfikatorze a następnie sprawdza czy taki lot istnieje
+     * 
      * @param flightId identyfikator lotu
      * @return obiekt lotu
      * @throws NotFoundException gdzy nie istnieje lot o podanym identyfikatorze
@@ -101,7 +103,7 @@ public class SeatService {
         MessageFormat form = new MessageFormat("There is no flights with id: {0}.");
         Flight flight = flightRepository.findOneById(flightId);
         if (flight == null) {
-            Object[] testArgs = {flightId};
+            Object[] testArgs = { flightId };
             String info = form.format(testArgs);
             LOGGER.error(info);
             throw new NotFoundException(info);

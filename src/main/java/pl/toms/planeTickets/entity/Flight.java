@@ -132,9 +132,9 @@ public class Flight extends BaseEntity {
     public void setSeats(List<Seat> seats) {
         this.seats = seats;
     }
-    
+
     public void addSeats(Seat seat) {
-        if (seats ==null) 
+        if (seats == null)
             seats = new ArrayList<>();
         seats.add(seat);
     }

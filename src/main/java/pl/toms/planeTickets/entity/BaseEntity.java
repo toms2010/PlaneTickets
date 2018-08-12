@@ -17,16 +17,15 @@ public class BaseEntity {
     private Integer id;
 
     public Integer getId() {
-	return id;
+        return id;
     }
 
     public void setId(Integer id) {
-	this.id = id;
+        this.id = id;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "BaseEntity [id=" + id + "]";
     }
 }

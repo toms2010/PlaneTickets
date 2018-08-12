@@ -73,7 +73,7 @@ public class FlightService {
         buildFlightSeats(newFlight);
         Integer newFlightId = newFlight.getId();
         LOGGER.debug("Created new flight with id: " + newFlightId);
-        return newFlight; 
+        return newFlight;
     }
 
     /**
@@ -95,7 +95,6 @@ public class FlightService {
             }
             flight.getSeats().clear();
         }
-
         buildFlightSeats(flight);
         Flight upadtedFlight = flightRepository.save(flight);
         LOGGER.debug("Updated flight with id: " + upadtedFlight.getId());
@@ -103,7 +102,7 @@ public class FlightService {
     }
 
     /**
-     * Usuwa lot o wskazanym identyfikatorze. Wraz z lotem są również usuwane przypisane do niego miejsca. 
+     * Usuwa lot o wskazanym identyfikatorze. Wraz z lotem są również usuwane przypisane do niego miejsca.
      * 
      * @param flightId identyfikator lotu
      */
@@ -120,6 +119,7 @@ public class FlightService {
 
     /**
      * Na podstawie typu samolotu buduje miejsca w locie.
+     * 
      * @param flight obiekt lotu
      */
     private void buildFlightSeats(Flight flight) {
@@ -141,6 +141,7 @@ public class FlightService {
 
     /**
      * Wczytuje pełne dane typu samolotu.
+     * 
      * @param flight obiekt lotu
      * @return obiekt typu samolotu
      */
