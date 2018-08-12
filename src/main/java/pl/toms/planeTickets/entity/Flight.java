@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -68,69 +69,69 @@ public class Flight extends BaseEntity {
     /**
      * Miejsca w samolocie podczas lotu.
      */
-    @OneToMany(mappedBy = "flight", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "flight", cascade = { CascadeType.ALL }, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Seat> seats;
 
     public String getDepartureAirport() {
-	return departureAirport;
+        return departureAirport;
     }
 
     public void setDepartureAirport(String departureAirport) {
-	this.departureAirport = departureAirport;
+        this.departureAirport = departureAirport;
     }
 
     public String getArrivalAirport() {
-	return arrivalAirport;
+        return arrivalAirport;
     }
 
     public void setArrivalAirport(String arrivalAirport) {
-	this.arrivalAirport = arrivalAirport;
+        this.arrivalAirport = arrivalAirport;
     }
 
     public String getFlightNumber() {
-	return flightNumber;
+        return flightNumber;
     }
 
     public void setFlightNumber(String flightNumber) {
-	this.flightNumber = flightNumber;
+        this.flightNumber = flightNumber;
     }
 
     public LocalDateTime getDepartureDate() {
-	return departureDate;
+        return departureDate;
     }
 
     public void setDepartureDate(LocalDateTime departureDate) {
-	this.departureDate = departureDate;
+        this.departureDate = departureDate;
     }
 
     public LocalTime getFlightTime() {
-	return flightTime;
+        return flightTime;
     }
 
     public void setFlightTime(LocalTime flightTime) {
-	this.flightTime = flightTime;
+        this.flightTime = flightTime;
     }
 
     public Plane getPlane() {
-	return plane;
+        return plane;
     }
 
     public void setPlane(Plane plane) {
-	this.plane = plane;
+        this.plane = plane;
     }
 
     public List<Seat> getSeats() {
-	return seats;
+        return seats;
     }
 
     public void setSeats(List<Seat> seats) {
-	this.seats = seats;
+        this.seats = seats;
     }
 
     @Override
-    public String toString()
-    {
-        return "Flight [departureAirport=" + departureAirport + ", arrivalAirport=" + arrivalAirport + ", flightNumber=" + flightNumber + ", departureDate="
-            + departureDate + ", flightTime=" + flightTime + ", plane=" + plane + ", seats=" + seats + ", toString()=" + super.toString() + "]";
+    public String toString() {
+        return "Flight [departureAirport=" + departureAirport + ", arrivalAirport=" + arrivalAirport + ", flightNumber=" + flightNumber
+                + ", departureDate=" + departureDate + ", flightTime=" + flightTime + ", plane=" + plane + ", seats=" + seats + ", toString()="
+                + super.toString() + "]";
     }
 }

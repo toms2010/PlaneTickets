@@ -68,11 +68,9 @@ public class FlightController {
      * @return odpowiedz zawierająca status odpowiedzi oraz linki.
      */
     @PutMapping
-    public ResponseEntity<URI> updateFlight(@Valid @RequestBody Flight flight) {
+    public ResponseEntity<Flight> updateFlight(@Valid @RequestBody Flight flight) {
         Flight updatedFlight = flightService.updateFlight(flight);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-                .buildAndExpand(updatedFlight.getId()).toUri();
-        return ResponseEntity.ok(location);
+        return ResponseEntity.ok(updatedFlight);
     }
 
     /**

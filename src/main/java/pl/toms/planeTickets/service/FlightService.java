@@ -6,11 +6,14 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import pl.toms.planeTickets.entity.Flight;
 import pl.toms.planeTickets.entity.Plane;
 import pl.toms.planeTickets.entity.Seat;
+import pl.toms.planeTickets.entity.Seat.SeatStatus;
+import pl.toms.planeTickets.exception.ApplicationException;
 import pl.toms.planeTickets.exception.NotFoundException;
 import pl.toms.planeTickets.repository.FlightRepository;
 import pl.toms.planeTickets.repository.PlaneRepository;
@@ -34,10 +37,21 @@ public class FlightService {
     @Autowired
     private SeatRepository seatRepository;
 
+    /**
+     * Pobiera wszystkie loty.
+     * 
+     * @return lista ze wszystkimi lotami
+     */
     public List<Flight> getAllFlights() {
         return flightRepository.findAll();
     }
 
+    /**
+     * Pobiera lot o podanym identyfikatorze.
+     * 
+     * @param flightId identyfikator lotu
+     * @return obiekt lotu
+     */
     public Flight getFlight(int flightId) {
         Flight flight = flightRepository.findOneById(flightId);
         if (flight == null) {
@@ -49,6 +63,12 @@ public class FlightService {
         return flight;
     }
 
+    /**
+     * Zapisuje przekazany lot. Na podstawie przekazanego typu samolotu tworzy miejsca w locie.
+     * 
+     * @param flight obiekt lotu do zapisania
+     * @return zapisany obiekt lotu
+     */
     public Flight addFlight(Flight flight) {
         Flight newFlight = flightRepository.save(flight);
         buildFlightSeats(newFlight);
@@ -57,11 +77,36 @@ public class FlightService {
         return flightRepository.findOneById(newFlightId); // FIXME nie zwraca seats!
     }
 
+    /**
+     * Zapisuje zmiany w przakazanym locie do bazy danych.
+     * 
+     * @param flight obiekt ze zmianami
+     * @return zaktualizowany lot
+     * @throws ApplicationException gdy w locie są juz zarezerwowane jakieś miejsca
+     */
     public Flight updateFlight(Flight flight) {
+        Flight oldFlight = flightRepository.findOneById(flight.getId());
+        List<Seat> seats = oldFlight.getSeats();
+        flight.setSeats(seats);
+        if (!seats.isEmpty()) {
+            for (Seat seat : seats) {
+                if (SeatStatus.R.getStatus().equals(seat.getStatus())) {
+                    throw new ApplicationException("Can not change plane type on the flight reserved seats", HttpStatus.CONFLICT);
+                }
+            }
+            flight.getSeats().clear();
+        }
+        Flight upadtedFlight = flightRepository.save(flight);
+        buildFlightSeats(upadtedFlight);
         LOGGER.debug("Updated flight with id: " + flight.getId());
-        return flightRepository.save(flight);
+        return flightRepository.save(upadtedFlight);
     }
 
+    /**
+     * Usuwa lot o wskazanym identyfikatorze. Wraz z lotem są również usuwane przypisane do niego miejsca. 
+     * 
+     * @param flightId identyfikator lotu
+     */
     public void deleteFlight(int flightId) {
         if (flightRepository.findOneById(flightId) == null) {
             Object[] testArgs = { flightId };
@@ -73,6 +118,10 @@ public class FlightService {
         LOGGER.debug("Deleted flight with id: " + flightId);
     }
 
+    /**
+     * Na podstawie typu samolotu buduje miejsca w locie.
+     * @param flight obiekt lotu
+     */
     private void buildFlightSeats(Flight flight) {
         Plane plane = flight.getPlane();
         if (plane == null) {
