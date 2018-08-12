@@ -2,6 +2,7 @@ package pl.toms.planeTickets.entity;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -17,11 +18,13 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Table(name = "flight")
-@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@flightId")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Flight extends BaseEntity {
     /**
      * 3 literowy kod lotniska.
@@ -64,12 +67,14 @@ public class Flight extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "plane_type_id", nullable = false)
     @NotNull
+    @JsonIdentityReference(alwaysAsId = true)
     private Plane plane;
 
     /**
      * Miejsca w samolocie podczas lotu.
      */
     @OneToMany(mappedBy = "flight", cascade = { CascadeType.ALL }, fetch = FetchType.LAZY, orphanRemoval = true)
+    @JsonIgnore
     private List<Seat> seats;
 
     public String getDepartureAirport() {
@@ -126,6 +131,12 @@ public class Flight extends BaseEntity {
 
     public void setSeats(List<Seat> seats) {
         this.seats = seats;
+    }
+    
+    public void addSeats(Seat seat) {
+        if (seats ==null) 
+            seats = new ArrayList<>();
+        seats.add(seat);
     }
 
     @Override

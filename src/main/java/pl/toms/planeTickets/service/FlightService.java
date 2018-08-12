@@ -19,7 +19,6 @@ import pl.toms.planeTickets.exception.ApplicationException;
 import pl.toms.planeTickets.exception.NotFoundException;
 import pl.toms.planeTickets.repository.FlightRepository;
 import pl.toms.planeTickets.repository.PlaneRepository;
-import pl.toms.planeTickets.repository.SeatRepository;
 
 @Service
 @Transactional
@@ -29,16 +28,13 @@ public class FlightService {
     /**
      * Wiadomość przy błędzie {@link NotFoundException}
      */
-    MessageFormat form = new MessageFormat("There is no flights with id: {0}.");
+    MessageFormat form = new MessageFormat("There is no flight with id: {0}.");
 
     @Autowired
     private FlightRepository flightRepository;
 
     @Autowired
     private PlaneRepository planeRepository;
-
-    @Autowired
-    private SeatRepository seatRepository;
 
     /**
      * Pobiera wszystkie loty.
@@ -77,7 +73,7 @@ public class FlightService {
         buildFlightSeats(newFlight);
         Integer newFlightId = newFlight.getId();
         LOGGER.debug("Created new flight with id: " + newFlightId);
-        return flightRepository.findOneById(newFlightId); // FIXME nie zwraca seats!
+        return newFlight; 
     }
 
     /**
@@ -99,8 +95,9 @@ public class FlightService {
             }
             flight.getSeats().clear();
         }
+
+        buildFlightSeats(flight);
         Flight upadtedFlight = flightRepository.save(flight);
-        buildFlightSeats(upadtedFlight);
         LOGGER.debug("Updated flight with id: " + upadtedFlight.getId());
         return upadtedFlight;
     }
@@ -126,20 +123,8 @@ public class FlightService {
      * @param flight obiekt lotu
      */
     private void buildFlightSeats(Flight flight) {
-        Plane plane = flight.getPlane();
-        if (plane == null) {
-            String message = "There is no information about the plane";
-            LOGGER.error(message);
-            throw new NotFoundException(message);
-        }
-
-        Integer seatsRows = plane.getSeatsRows();
-        if (seatsRows == null || seatsRows == 0) {
-            Integer planeId = plane.getId();
-            plane = planeRepository.findOneById(planeId);
-            seatsRows = plane.getSeatsRows();
-        }
-
+        Plane plane = getFullPlaneData(flight);
+        int seatsRows = plane.getSeatsRows();
         int seatsInRow = plane.getSeatsInRow();
         int seatNumber = 0;
         for (int i = 0; i < seatsInRow; i++) {
@@ -149,8 +134,26 @@ public class FlightService {
                 seat.setFlight(flight);
                 seat.setNumber(seatNumber);
                 seat.setStatus(Seat.SeatStatus.F.getStatus());
-                seatRepository.save(seat);
+                flight.addSeats(seat);
             }
         }
+    }
+
+    /**
+     * Wczytuje pełne dane typu samolotu.
+     * @param flight obiekt lotu
+     * @return obiekt typu samolotu
+     */
+    private Plane getFullPlaneData(Flight flight) {
+        Plane plane = flight.getPlane();
+        if (plane == null) {
+            String message = "There is no information about the plane";
+            LOGGER.error(message);
+            throw new NotFoundException(message);
+        }
+        Integer planeId = plane.getId();
+        plane = planeRepository.findOneById(planeId);
+        flight.setPlane(plane);
+        return plane;
     }
 }
