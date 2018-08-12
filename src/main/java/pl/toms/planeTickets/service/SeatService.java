@@ -3,6 +3,8 @@ package pl.toms.planeTickets.service;
 import java.text.MessageFormat;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,7 @@ import pl.toms.planeTickets.repository.FlightRepository;
 import pl.toms.planeTickets.repository.SeatRepository;
 
 @Service
+@Transactional
 public class SeatService {
     protected static final Logger LOGGER = LoggerFactory.getLogger(SeatService.class);
 
@@ -79,7 +82,6 @@ public class SeatService {
                 throw new ApplicationException("Passager name can not be null", HttpStatus.UNPROCESSABLE_ENTITY);
             oldSeat.setPassagerName(newSeat.getPassagerName());
         }
-        seatRepository.save(oldSeat);
         
         if (Seat.SeatStatus.R.getStatus().equals(oldSeat.getStatus())) {
             LOGGER.debug("Reservated seat with number: " + oldSeat.getNumber());

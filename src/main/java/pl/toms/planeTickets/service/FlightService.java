@@ -3,6 +3,8 @@ package pl.toms.planeTickets.service;
 import java.text.MessageFormat;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,7 @@ import pl.toms.planeTickets.repository.PlaneRepository;
 import pl.toms.planeTickets.repository.SeatRepository;
 
 @Service
+@Transactional
 public class FlightService {
     protected static final Logger LOGGER = LoggerFactory.getLogger(FlightService.class);
 
@@ -91,15 +94,15 @@ public class FlightService {
         if (!seats.isEmpty()) {
             for (Seat seat : seats) {
                 if (SeatStatus.R.getStatus().equals(seat.getStatus())) {
-                    throw new ApplicationException("Can not change plane type on the flight reserved seats", HttpStatus.CONFLICT);
+                    throw new ApplicationException("Can not change flight with reserved seats", HttpStatus.CONFLICT);
                 }
             }
             flight.getSeats().clear();
         }
         Flight upadtedFlight = flightRepository.save(flight);
         buildFlightSeats(upadtedFlight);
-        LOGGER.debug("Updated flight with id: " + flight.getId());
-        return flightRepository.save(upadtedFlight);
+        LOGGER.debug("Updated flight with id: " + upadtedFlight.getId());
+        return upadtedFlight;
     }
 
     /**
