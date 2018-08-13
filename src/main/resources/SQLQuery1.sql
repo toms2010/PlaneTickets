@@ -57,7 +57,8 @@ CREATE TABLE seat
 	price_group_id smallint,
 	[status] char(1),
 	create_date datetime2,
-	create_user_id smallint
+	create_user_id smallint,
+	passager_temp varchar(50)
 
 	CONSTRAINT FK_SEAT_TO_PASSAGER
 	FOREIGN KEY (passager_id) REFERENCES passager (id),

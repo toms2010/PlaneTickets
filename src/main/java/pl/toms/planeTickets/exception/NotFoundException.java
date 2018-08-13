@@ -13,25 +13,26 @@ public class NotFoundException extends RuntimeException {
 
     /**
      * Błąd w trakcie działania aplikacji.
+     * 
      * @param message komunikat o błędzie
      */
     public NotFoundException(String message) {
-	super(message);
+        super(message);
     }
 
     public NotFoundException() {
-	super();
+        super();
     }
 
     public NotFoundException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-	super(message, cause, enableSuppression, writableStackTrace);
+        super(message, cause, enableSuppression, writableStackTrace);
     }
 
     public NotFoundException(String message, Throwable cause) {
-	super(message, cause);
+        super(message, cause);
     }
 
     public NotFoundException(Throwable cause) {
-	super(cause);
+        super(cause);
     }
 }

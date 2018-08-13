@@ -3,7 +3,7 @@ package pl.toms.planeTickets.exception;
 import org.springframework.http.HttpStatus;
 
 /**
- * Błąd, nie odnaleziono. Zwraca status http 404 not found.
+ * Błąd ogólny aplikacji do którego przekazać możemy status HTTP
  */
 public class ApplicationException extends RuntimeException {
 
@@ -13,39 +13,45 @@ public class ApplicationException extends RuntimeException {
 
     /**
      * Błąd w trakcie działania aplikacji.
+     * 
      * @param message komunikat o błędzie
      */
     public ApplicationException(String message) {
-	super(message);
+        super(message);
     }
 
     public ApplicationException() {
-	super();
+        super();
     }
 
+    /**
+     * Błąd w trakcie działania aplikacji.
+     * 
+     * @param message komunikat o błędzie
+     * @param status status HTTP błędu
+     */
     public ApplicationException(String message, HttpStatus status) {
-	super(message);
-	this.status = status;
+        super(message);
+        this.status = status;
     }
 
-    public ApplicationException(String message, Throwable cause, boolean enableSuppression,
-	    boolean writableStackTrace) {
-	super(message, cause, enableSuppression, writableStackTrace);
+    public ApplicationException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
     }
 
     public ApplicationException(String message, Throwable cause) {
-	super(message, cause);
+        super(message, cause);
     }
 
     public ApplicationException(Throwable cause) {
-	super(cause);
+        super(cause);
     }
 
     public HttpStatus getStatus() {
-	return status;
+        return status;
     }
 
     public void setStatus(HttpStatus status) {
-	this.status = status;
+        this.status = status;
     }
 }

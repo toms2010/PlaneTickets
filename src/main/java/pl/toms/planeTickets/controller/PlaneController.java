@@ -26,40 +26,62 @@ public class PlaneController {
     @Autowired
     private PlaneService planeService;
 
+    /**
+     * Pobiera wszystkie rodzaje samolotów.
+     * 
+     * @return lista ze wszystkimi rodzajami samolotów
+     */
     @GetMapping
     public List<Plane> getPlanes() {
-	return planeService.getPlanes();
+        return planeService.getPlanes();
     }
 
+    /**
+     * Pobiera rodzaj samolotu o podanym identyfikatorze.
+     * 
+     * @param planeTypeId identyfikator rodzaju samolotu
+     * @return obiekt rodzaju samolotu
+     */
     @GetMapping("/{planeTypeId}")
     public Plane getPlane(@PathVariable int planeTypeId) {
-	return planeService.getPlane(planeTypeId);
+        return planeService.getPlane(planeTypeId);
     }
 
+    /**
+     * Zapisuje przekazany rodzaj samolotu.
+     * 
+     * @param plane obiekt rodzaju samolotu do zapisania
+     * @return odpowiedz zawierająca zapisany obiekt, status odpowiedzi oraz linki.
+     */
     @PostMapping
     public ResponseEntity<Plane> addPlaneType(@Valid @RequestBody Plane plane) {
-	Plane newPlane = planeService.addPlaneType(plane);
-
-	URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newPlane.getId())
-		.toUri();
-
-	return ResponseEntity.created(location).body(newPlane);
+        Plane newPlane = planeService.addPlaneType(plane);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newPlane.getId()).toUri();
+        return ResponseEntity.created(location).body(newPlane);
     }
 
+    /**
+     * Zapisuje zmiany w przakazanym obiekcie do bazy danych.
+     * 
+     * @param plane obiekt ze zmianami
+     * @return odpowiedz zawierająca status odpowiedzi oraz linki.
+     */
     @PutMapping
     public ResponseEntity<URI> updatePlane(@RequestBody Plane plane) {
-	Plane updatedPlane = planeService.addPlaneType(plane);
-
-	URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-		.buildAndExpand(updatedPlane.getId()).toUri();
-
-	return ResponseEntity.ok(location);
+        Plane updatedPlane = planeService.modifyPlane(plane);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(updatedPlane.getId()).toUri();
+        return ResponseEntity.ok(location);
     }
 
+    /**
+     * Usuwa rodzaj samolotu o wskazanym identyfikatorze.
+     * 
+     * @param planeTypeId identyfikator rodzaju samolotu
+     * @return odpowiedz noContent
+     */
     @DeleteMapping("/{planeTypeId}")
     public ResponseEntity<Plane> deletePlane(@PathVariable int planeTypeId) {
-	planeService.deletePlane(planeTypeId);
-
-	return ResponseEntity.noContent().build();
+        planeService.deletePlane(planeTypeId);
+        return ResponseEntity.noContent().build();
     }
 }
